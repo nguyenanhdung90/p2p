@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\FiatInfo;
+
 return [
 
     /*
@@ -30,4 +32,56 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'coin_infos' => [
+        [
+            ["currency" => "TON"],
+            ["decimals" => 9]
+        ],
+        [
+            ["currency" => "USDT"],
+            [
+                "name" => "Tether USD",
+                "description" => "Tether Token for Tether USD",
+                "image" => "https://tether.to/images/logoCircle.png",
+                "decimals" => 6,
+            ]
+        ],
+        [
+            ["currency" => "NOT"],
+            [
+                "name" => "Notcoin",
+                "image" => "https://cdn.joincommunity.xyz/clicker/not_logo.png",
+                "decimals" => 9,
+            ]
+        ],
+        [
+            ["currency" => "PAYN"],
+            ["decimals" => 9],
+        ],
+        [
+            ["currency" => "BTC"],
+            [
+                "decimals" => 8,
+                "name" => "Bitcoin"
+            ],
+        ]
+    ],
+    'fiat_infos' => [
+        [
+            ["currency" => FiatInfo::FIAT_USD],
+            [
+                "decimals" => 2,
+                "description" => "United States dollar",
+                "name" => "United States dollar"
+            ]
+        ],
+        [
+            ["currency" => FiatInfo::FIAT_VND],
+            [
+                "decimals" => 0,
+                "description" => "Vietnamese dong",
+                "name" => "Vietnamese dong"
+            ]
+        ]
+    ]
 ];
