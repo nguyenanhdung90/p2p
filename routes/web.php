@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\P2PController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,4 +16,4 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/mapPairCoinToFiats', [P2PController::class, 'mapPairCoinToFiatsExample']);
+

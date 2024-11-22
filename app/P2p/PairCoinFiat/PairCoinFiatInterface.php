@@ -4,5 +4,11 @@ namespace App\P2p\PairCoinFiat;
 
 interface PairCoinFiatInterface
 {
-    public function mapFiats(string $coin, array $fiats);
+    public function mapPairCoinFiats(string $coin, array $fiats): bool;
+
+    public function createPairCoinFiat(string $coin, string $fiat): bool;
+
+    public function deletePairCoinFiat(string $coin, string $fiat): bool;
+
+    public function getAllPairCoinFiat(?string $coin, ?array $fiats);
 }
