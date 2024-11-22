@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\P2p\PairCoinFiat\PairCoinFiat;
+use App\P2p\PairCoinFiat\PairCoinFiatInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +15,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $appServices = [
+            PairCoinFiatInterface::class => PairCoinFiat::class
+        ];
+        foreach ($appServices as $key => $value) {
+            $this->app->bind($key, $value);
+        }
     }
 
     /**
