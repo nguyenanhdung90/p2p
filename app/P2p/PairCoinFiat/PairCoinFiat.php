@@ -9,11 +9,11 @@ use Illuminate\Support\Facades\Log;
 
 class PairCoinFiat implements PairCoinFiatInterface
 {
-    public function updatePairCoinFiat(string $coin, array $fiat, int $maxFiatPrice): bool
+    public function updatePairCoinFiat(string $coin, string $fiat, int $maxFiatPrice): bool
     {
         try {
             $coinInfo = CoinInfo::where("currency", $coin)->where('is_active', true)->first();
-            $fiat = FiatInfo::where("currency", $fiat)->get()->pluck('id')->toArray();
+            $fiat = FiatInfo::where("currency", $fiat)->first();
             if (empty($fiat)) {
                 return false;
             }
