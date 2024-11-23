@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BankTransferDetailController;
 use App\Http\Controllers\P2PController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -26,5 +27,5 @@ Route::get('/getPairCoinFiatBy', [P2PController::class, 'getPairCoinFiatBy']);
 
 Route::post('/createP2pAd', [P2PController::class, 'createP2pAd']);
 
-
-Route::post('/createBankTransferDetail', [P2PController::class, 'createBankTransferDetail']);
+Route::post('/createBankTransferDetail', [BankTransferDetailController::class, 'createBankTransferDetail']);
+Route::post('/updateBankTransferDetail', [BankTransferDetailController::class, 'updateBankTransferDetail']);

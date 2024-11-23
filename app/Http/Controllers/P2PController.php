@@ -64,21 +64,5 @@ class P2PController extends Controller
         return 123;
     }
 
-    public function createBankTransferDetail(CreateBankTransferDetailRequest $request,
-                                             BankTransferDetailInterface $bankTransferDetail)
-    {
-        try {
-            $data = $request->validated();
-            $result = $bankTransferDetail->create($data);
-            return response(json_encode([
-                "success" => $result instanceof Model
-            ]), 200);
-        } catch (\Exception $e) {
-            Log::error("Exception createBankTransferDetail: " . $e->getMessage());
-            return response(json_encode([
-                "success" => false,
-                "message" => $e->getMessage()
-            ]), 200);
-        }
-    }
+
 }
