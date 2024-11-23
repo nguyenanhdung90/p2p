@@ -25,9 +25,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
-    Route::post('/updatePairCoinFiat', [PairCoinFiatController::class, 'updatePairCoinFiat']);
-    Route::post('/deletePairCoinFiat', [PairCoinFiatController::class, 'deletePairCoinFiat']);
-    Route::get('/getPairCoinFiatBy', [PairCoinFiatController::class, 'getPairCoinFiatBy']);
+    Route::post('/updatePairCoinFiat', [PairCoinFiatController::class, 'update']);
+    Route::post('/deletePairCoinFiat', [PairCoinFiatController::class, 'delete']);
+    Route::get('/getPairCoinFiatBy', [PairCoinFiatController::class, 'getBy']);
 
     Route::post('/createP2pAd', [P2pAdController::class, 'createP2pAd']);
 

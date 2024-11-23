@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DeleteCoinFiatRequest;
 use App\Http\Requests\UpdatePairCoinFiatRequest;
 use App\P2p\PairCoinFiat\PairCoinFiatInterface;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class PairCoinFiatController extends Controller
 {
-    public function updatePairCoinFiat(UpdatePairCoinFiatRequest $request, PairCoinFiatInterface $pairCoinFiat): string
+    public function update(UpdatePairCoinFiatRequest $request, PairCoinFiatInterface $pairCoinFiat): JsonResponse
     {
         try {
             $coin = $request->get('coin');
@@ -26,8 +27,7 @@ class PairCoinFiatController extends Controller
         }
     }
 
-    public function deletePairCoinFiat(DeleteCoinFiatRequest $request,
-                                       PairCoinFiatInterface $pairCoinFiat): string
+    public function delete(DeleteCoinFiatRequest $request, PairCoinFiatInterface $pairCoinFiat): JsonResponse
     {
         try {
             $coin = $request->get('coin');
@@ -43,8 +43,7 @@ class PairCoinFiatController extends Controller
         }
     }
 
-    public function getPairCoinFiatBy(Request $request,
-                                      PairCoinFiatInterface $pairCoinFiat): string
+    public function getBy(Request $request, PairCoinFiatInterface $pairCoinFiat)
     {
         $coin = $request->get("coin");
         $fiats = $request->get("fiats");
