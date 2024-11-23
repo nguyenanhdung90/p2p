@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateBankTransferDetailRequest;
 use App\Http\Requests\UpdateBankTransferDetailRequest;
 use App\P2p\BankTransferDetails\BankTransferDetailInterface;
+use App\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class BankTransferDetailController extends Controller
@@ -44,5 +46,12 @@ class BankTransferDetailController extends Controller
                 "message" => $e->getMessage()
             ]), 200);
         }
+    }
+
+    public function token(Request $request)
+    {
+        $user = User::find(2);
+        $token = $user->createToken('token-name');
+        return $token->plainTextToken;
     }
 }
