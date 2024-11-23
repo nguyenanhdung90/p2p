@@ -24,10 +24,6 @@ class CreateBankTransferDetailRequest extends BaseRequest
     public function rules()
     {
         return [
-            "user_id" => [
-                "required",
-                Rule::exists("users", "id")
-            ],
             "account_name" => [
                 "required",
                 "max:" . config("services.default_max_length_string")

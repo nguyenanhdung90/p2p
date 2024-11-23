@@ -17,6 +17,9 @@ class BankTransferDetail implements BankTransferDetailInterface
         if (!$bankDetail) {
             return false;
         }
+        if ($bankDetail->user_id != $data['user_id']) {
+            return false;
+        }
         if (!empty($data['account_name'])) {
             $bankDetail->account_name = $data['account_name'];
         }
@@ -34,5 +37,17 @@ class BankTransferDetail implements BankTransferDetailInterface
         }
         $bankDetail->save();
         return true;
+    }
+
+    public function getAllBy(array $params)
+    {
+        $query = BankTransferDetailModel::query()->where('is_active', true);
+        if (!empty($params['user_id'])) {
+            $query->where('user_id', $params['user_id']);
+        }
+        if (!empty($params['is_default'])) {
+            $query->where('is_default', $params['is_default']);
+        }
+        return $query->get();
     }
 }

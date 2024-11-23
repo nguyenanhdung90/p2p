@@ -5,53 +5,41 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateBankTransferDetailRequest;
 use App\Http\Requests\UpdateBankTransferDetailRequest;
 use App\P2p\BankTransferDetails\BankTransferDetailInterface;
-use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class BankTransferDetailController extends Controller
 {
-    public function createBankTransferDetail(CreateBankTransferDetailRequest $request,
-                                             BankTransferDetailInterface $bankTransferDetail)
+    public function create(CreateBankTransferDetailRequest $request, BankTransferDetailInterface $bankTransferDetail)
     {
         try {
             $data = $request->validated();
+            $data['user_id'] = $request->user()->id;
             $result = $bankTransferDetail->create($data);
-            return response(json_encode([
-                "success" => $result instanceof Model
-            ]), 200);
+            return response(json_encode(["success" => $result instanceof Model]), 200);
         } catch (\Exception $e) {
             Log::error("Exception createBankTransferDetail: " . $e->getMessage());
-            return response(json_encode([
-                "success" => false,
-                "message" => $e->getMessage()
-            ]), 200);
+            return response(json_encode(["success" => false, "message" => $e->getMessage()]), 200);
         }
     }
 
-    public function updateBankTransferDetail(UpdateBankTransferDetailRequest $request,
-                                             BankTransferDetailInterface $bankTransferDetail)
+    public function update(UpdateBankTransferDetailRequest $request, BankTransferDetailInterface $bankTransferDetail)
     {
         try {
             $data = $request->validated();
+            $data['user_id'] = $request->user()->id;
             $isSuccess = $bankTransferDetail->update($data);
-            return response(json_encode([
-                "success" => $isSuccess
-            ]), 200);
+            return response(json_encode(["success" => $isSuccess]), 200);
         } catch (\Exception $e) {
             Log::error("Exception createBankTransferDetail: " . $e->getMessage());
-            return response(json_encode([
-                "success" => false,
-                "message" => $e->getMessage()
-            ]), 200);
+            return response(json_encode(["success" => false, "message" => $e->getMessage()]), 200);
         }
     }
 
-    public function token(Request $request)
+    public function getOwnAll(Request $request, BankTransferDetailInterface $bankTransferDetail)
     {
-        $user = User::find(2);
-        $token = $user->createToken('token-name');
-        return $token->plainTextToken;
+        $params['user_id'] = $request->user()->id;
+        return response(json_encode(["success" => true, "data" => $bankTransferDetail->getAllBy($params)]), 200);
     }
 }

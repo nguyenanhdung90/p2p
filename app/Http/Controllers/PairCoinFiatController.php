@@ -16,14 +16,13 @@ class PairCoinFiatController extends Controller
             $coin = $request->get('coin');
             $fiat = $request->get('fiat');
             $maxFiatPrice = $request->get('max_fiat_price');
-            return response()->json([
-                'success' => $pairCoinFiat->updatePairCoinFiat($coin, $fiat, $maxFiatPrice),
-            ]);
+            return response(json_encode([
+                "success" => $pairCoinFiat->updatePairCoinFiat($coin, $fiat, $maxFiatPrice)]), 200);
         } catch (\Exception $e) {
-            return response()->json([
+            return response(json_encode([
                 'success' => false,
                 "message" => $e->getMessage()
-            ], 500);
+            ]), 500);
         }
     }
 
@@ -32,11 +31,9 @@ class PairCoinFiatController extends Controller
         try {
             $coin = $request->get('coin');
             $fiat = $request->get('fiat');
-            return response()->json([
-                'success' => $pairCoinFiat->deletePairCoinFiat($coin, $fiat),
-            ]);
+            return response(json_encode(['success' => $pairCoinFiat->deletePairCoinFiat($coin, $fiat)]));
         } catch (\Exception $e) {
-            return response()->json([
+            return response([
                 'success' => false,
                 "message" => $e->getMessage()
             ], 500);
@@ -47,6 +44,6 @@ class PairCoinFiatController extends Controller
     {
         $coin = $request->get("coin");
         $fiats = $request->get("fiats");
-        return $pairCoinFiat->getPairCoinFiatBy($coin, $fiats);
+        return response(json_encode(['success' => true, 'data' => $pairCoinFiat->getPairCoinFiatBy($coin, $fiats)]));
     }
 }

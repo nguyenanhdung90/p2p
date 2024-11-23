@@ -29,10 +29,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/deletePairCoinFiat', [PairCoinFiatController::class, 'delete']);
     Route::get('/getPairCoinFiatBy', [PairCoinFiatController::class, 'getBy']);
 
-    Route::post('/createP2pAd', [P2pAdController::class, 'createP2pAd']);
+    Route::post('/createP2pAd', [P2pAdController::class, 'create']);
 
-    Route::post('/createBankTransferDetail', [BankTransferDetailController::class, 'createBankTransferDetail']);
-    Route::post('/updateBankTransferDetail', [BankTransferDetailController::class, 'updateBankTransferDetail']);
+    Route::post('/createBankTransferDetail', [BankTransferDetailController::class, 'create']);
+    Route::post('/updateBankTransferDetail', [BankTransferDetailController::class, 'update']);
 });
 
 Route::post('/login', [AuthController::class, 'login']);
