@@ -2,17 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreateBankTransferDetailRequest;
 use App\Http\Requests\CreateCoinFiatRequest;
 use App\Http\Requests\CreateP2pAdRequest;
 use App\Http\Requests\DeleteCoinFiatRequest;
 use App\Http\Requests\PairCoinFiatsRequest;
 use App\P2p\Ads\P2pAdInterface;
-use App\P2p\BankTransferDetails\BankTransferDetailInterface;
 use App\P2p\PairCoinFiat\PairCoinFiatInterface;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class P2PController extends Controller
 {
@@ -63,6 +59,4 @@ class P2PController extends Controller
     {
         return 123;
     }
-
-
 }
