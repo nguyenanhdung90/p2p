@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests;
 
-
 use Illuminate\Validation\Rule;
 
-class CreateCoinFiatRequest  extends BaseRequest
+class UpdatePairCoinFiatRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,12 +26,14 @@ class CreateCoinFiatRequest  extends BaseRequest
         return [
             'coin' => [
                 "required",
-                Rule::exists("coin_infos", "currency")->where('is_active', true)
+                Rule::exists("coin_infos", "currency")->where("is_active", true)
             ],
             'fiat' => [
-                "required",
-                Rule::exists("fiat_infos", "currency")
+                'required'
             ],
+            'max_fiat_price' => [
+                'required'
+            ]
         ];
     }
 }

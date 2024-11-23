@@ -4,42 +4,23 @@ namespace App\P2p\PairCoinFiat;
 
 use App\Models\CoinInfo;
 use App\Models\FiatInfo;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 
 class PairCoinFiat implements PairCoinFiatInterface
 {
-    public function mapPairCoinFiats(string $coin, array $fiats): bool
+    public function updatePairCoinFiat(string $coin, array $fiat, int $maxFiatPrice): bool
     {
         try {
             $coinInfo = CoinInfo::where("currency", $coin)->where('is_active', true)->first();
-            $fiats = FiatInfo::whereIn("currency", $fiats)->get()->pluck('id')->toArray();
-            if (empty($fiats)) {
+            $fiat = FiatInfo::where("currency", $fiat)->get()->pluck('id')->toArray();
+            if (empty($fiat)) {
                 return false;
             }
-            $coinInfo->fiats()->sync($fiats);
+            $coinInfo->fiats()->syncWithoutDetaching([$fiat->id => ['max_fiat_price' => $maxFiatPrice]]);
             return true;
         } catch (\Exception $e) {
             Log::error("mapFiats: " . $e->getMessage());
-            return false;
-        }
-    }
-
-    public function createPairCoinFiat(string $coin, string $fiat): bool
-    {
-        try {
-            $coinInfo = CoinInfo::where("currency", $coin)->where('is_active', true)->first();
-            $fiatInfo = FiatInfo::where("currency", $fiat)->first();
-            $existedFiat = CoinInfo::whereHas('fiats', function (Builder $query) use ($fiat) {
-                $query->where('currency', '=', $fiat);
-            })->with("fiats")->where('currency', '=', $coin)->count();
-            if (!$existedFiat) {
-                $coinInfo->fiats()->attach($fiatInfo->id);
-            }
-            return true;
-        } catch (\Exception $e) {
-            Log::error("createPairCoinFiat: " . $e->getMessage());
             return false;
         }
     }

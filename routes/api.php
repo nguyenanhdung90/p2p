@@ -2,8 +2,9 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BankTransferDetailController;
+use App\Http\Controllers\P2pAdController;
 use App\Http\Controllers\P2PController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\PairCoinFiatController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,24 +18,26 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
+
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
+
+    Route::post('/updatePairCoinFiat', [PairCoinFiatController::class, 'updatePairCoinFiat']);
+    Route::post('/deletePairCoinFiat', [PairCoinFiatController::class, 'deletePairCoinFiat']);
+    Route::get('/getPairCoinFiatBy', [PairCoinFiatController::class, 'getPairCoinFiatBy']);
+
+    Route::post('/createP2pAd', [P2pAdController::class, 'createP2pAd']);
+
+    Route::post('/createBankTransferDetail', [BankTransferDetailController::class, 'createBankTransferDetail']);
+    Route::post('/updateBankTransferDetail', [BankTransferDetailController::class, 'updateBankTransferDetail']);
 });
 
 Route::post('/login', [AuthController::class, 'login']);
 
 
-Route::post('/mapPairCoinFiats', [P2PController::class, 'mapPairCoinFiats']);
-Route::post('/createPairCoinFiat', [P2PController::class, 'createPairCoinFiat']);
-Route::post('/deletePairCoinFiat', [P2PController::class, 'deletePairCoinFiat']);
-Route::get('/getPairCoinFiatBy', [P2PController::class, 'getPairCoinFiatBy']);
 
-Route::post('/createP2pAd', [P2PController::class, 'createP2pAd']);
-
-Route::post('/createBankTransferDetail', [BankTransferDetailController::class, 'createBankTransferDetail']);
-Route::post('/updateBankTransferDetail', [BankTransferDetailController::class, 'updateBankTransferDetail']);
 
 

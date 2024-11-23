@@ -36,7 +36,6 @@ class CreateP2pAdRequest extends BaseRequest
             "price" => [
                 "required",
                 "numeric",
-//                "max:10"
             ],
             "amount" => [
                 "required",
