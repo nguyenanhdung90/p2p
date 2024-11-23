@@ -26,7 +26,7 @@ class PairCoinFiatsRequest extends BaseRequest
         return [
             'coin' => [
                 "required",
-                Rule::exists("coin_infos", "currency")
+                Rule::exists("coin_infos", "currency")->where("is_active", true)
             ],
             'fiats' => [
                 'required'

@@ -19,7 +19,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/mapPairCoinFiats', [P2PController::class, 'mapPairCoinFiatsExample']);
-Route::post('/createPairCoinFiat', [P2PController::class, 'createPairCoinFiatExample']);
-Route::post('/deletePairCoinFiat', [P2PController::class, 'deletePairCoinFiatExample']);
-Route::get('/getPairCoinFiatBy', [P2PController::class, 'getPairCoinFiatByExample']);
+Route::post('/mapPairCoinFiats', [P2PController::class, 'mapPairCoinFiats']);
+Route::post('/createPairCoinFiat', [P2PController::class, 'createPairCoinFiat']);
+Route::post('/deletePairCoinFiat', [P2PController::class, 'deletePairCoinFiat']);
+Route::get('/getPairCoinFiatBy', [P2PController::class, 'getPairCoinFiatBy']);
+
+Route::post('/createP2pAd', [P2PController::class, 'createP2pAd']);
+
+
+Route::post('/createBankTransferDetail', [P2PController::class, 'createBankTransferDetail']);

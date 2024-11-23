@@ -17,8 +17,8 @@ class CreateFiatInfosTable extends Migration
             $table->id();
             $table->char('currency', 20)->unique();
             $table->unsignedTinyInteger('decimals')->default(0);
-            $table->string('name')->nullable();
-            $table->string('description')->nullable();
+            $table->string('name', config("services.default_max_length_string"))->nullable();
+            $table->string('description', config("services.default_max_length_string"))->nullable();
             $table->timestamps();
         });
     }

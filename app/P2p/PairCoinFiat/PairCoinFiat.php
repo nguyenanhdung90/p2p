@@ -57,7 +57,7 @@ class PairCoinFiat implements PairCoinFiatInterface
         }
     }
 
-    public function getAllPairCoinFiat(?string $coin, ?array $fiats): Collection
+    public function getPairCoinFiatBy(?string $coin, ?array $fiats): Collection
     {
         $query = CoinInfo::query()->where('is_active', true);
         if ($coin) {

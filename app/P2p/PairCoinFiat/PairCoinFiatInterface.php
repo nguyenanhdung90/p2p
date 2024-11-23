@@ -10,5 +10,5 @@ interface PairCoinFiatInterface
 
     public function deletePairCoinFiat(string $coin, string $fiat): bool;
 
-    public function getAllPairCoinFiat(?string $coin, ?array $fiats);
+    public function getPairCoinFiatBy(?string $coin, ?array $fiats);
 }

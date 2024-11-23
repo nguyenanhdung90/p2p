@@ -83,5 +83,6 @@ return [
                 "name" => "Vietnamese dong"
             ]
         ]
-    ]
+    ],
+    "default_max_length_string" => 191
 ];
