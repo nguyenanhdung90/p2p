@@ -4,7 +4,6 @@ namespace App\P2p\PairCoinFiat;
 
 use App\Models\CoinInfo;
 use App\Models\FiatInfo;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 
@@ -63,20 +62,31 @@ class PairCoinFiat implements PairCoinFiatInterface
         return $coinInfo->collapse();
     }
 
-    public function getMaxFiatPriceBy(string $coin, string $fiat): ?int
+    public function getMaxFiatPriceBy(?string $coin, ?string $fiat): Collection
     {
-        $coinFiat = CoinInfo::whereHas('fiats', function (Builder $query) use ($fiat) {
-            $query->where('currency', '=', $fiat);
-        })
-            ->with(["fiats" => function ($queryFiat) use ($fiat) {
-                $queryFiat->where("currency", $fiat);
-            }])
-            ->where('currency', '=', $coin)
-            ->where("is_active", true)
-            ->first();
-        if (!$coinFiat) {
-            return null;
+        $query = CoinInfo::query()->where('is_active', true);
+        if ($coin) {
+            $query->where("currency", $coin);
         }
-        return (int)$coinFiat->fiats->first()->pivot->max_fiat_price;
+        if (empty($fiat)) {
+            $query->has("fiats", ">", 0)->with("fiats");
+        } else {
+            $query->with(['fiats' => function ($q) use ($fiat) {
+                $q->where('currency', $fiat);
+            }]);
+        }
+        $coinInfo = $query->get();
+        $coinInfo->transform(function ($coin, $key) {
+            $fiats = $coin->fiats;
+            $fiats->transform(function ($fiat, $key) use ($coin) {
+                return [
+                    "coin" => $coin->currency,
+                    "fiat" => $fiat->currency,
+                    "max_fiat_price" => $fiat->pivot->max_fiat_price
+                ];
+            });
+            return $fiats;
+        });
+        return $coinInfo->collapse();
     }
 }

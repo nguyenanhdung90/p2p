@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class MaxFiatPriceRequest extends FormRequest
+class MaxFiatPriceRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +13,7 @@ class MaxFiatPriceRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -26,11 +25,9 @@ class MaxFiatPriceRequest extends FormRequest
     {
         return [
             'coin' => [
-                "required",
                 Rule::exists("coin_infos", "currency")
             ],
             'fiat' => [
-                "required",
                 Rule::exists("fiat_infos", "currency")
             ],
         ];

@@ -2,6 +2,8 @@
 
 namespace App\P2p\PairCoinFiat;
 
+use Illuminate\Support\Collection;
+
 interface PairCoinFiatInterface
 {
     public function updatePairCoinFiat(string $coin, string $fiat, int $maxFiatPrice): bool;
@@ -10,5 +12,5 @@ interface PairCoinFiatInterface
 
     public function getPairCoinFiatBy(?string $coin, ?array $fiats);
 
-    public function getMaxFiatPriceBy(string $coin, string $fiat): ?int;
+    public function getMaxFiatPriceBy(?string $coin, ?string $fiat): Collection;
 }

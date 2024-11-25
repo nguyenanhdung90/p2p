@@ -27,7 +27,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::post('/updatePairCoinFiat', [PairCoinFiatController::class, 'update']);
     Route::post('/deletePairCoinFiat', [PairCoinFiatController::class, 'delete']);
-    Route::get('/getPairCoinFiatBy', [PairCoinFiatController::class, 'getBy']);
+    Route::get('/getPairCoinFiat', [PairCoinFiatController::class, 'getBy']);
     Route::get('/getMaxFiatPrice', [PairCoinFiatController::class, 'getMaxFiatPrice']);
 
     Route::post('/createP2pAd', [P2pAdController::class, 'create']);

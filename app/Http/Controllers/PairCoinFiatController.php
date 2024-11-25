@@ -51,11 +51,11 @@ class PairCoinFiatController extends Controller
     public function getMaxFiatPrice(MaxFiatPriceRequest $request, PairCoinFiatInterface $pairCoinFiat)
     {
         return response(json_encode(
-            [
-                'success' => true,
-                'data' => [
-                    'max_fiat_price' => $pairCoinFiat->getMaxFiatPriceBy($request->get("coin"), $request->get("fiat"))
+                [
+                    'success' => true,
+                    'data' => $pairCoinFiat->getMaxFiatPriceBy($request->get("coin"), $request->get("fiat"))
                 ]
-            ]));
+            )
+        );
     }
 }
