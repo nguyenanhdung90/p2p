@@ -16,6 +16,7 @@ class CreateP2pTransactionsTable extends Migration
     {
         Schema::create('p2p_transactions', function (Blueprint $table) {
             $table->id();
+            $table->char("reference", 36)->unique();
             $table->unsignedBigInteger("p2p_ad_id");
             $table->unsignedBigInteger("partner_user_id");
             $table->unsignedBigInteger("coin_amount");
@@ -24,6 +25,13 @@ class CreateP2pTransactionsTable extends Migration
             $table->timestamp("end_process");
             $table->enum("status", [P2pTransaction::INITIATE, P2pTransaction::CONFIRM_PAYMENT,
                 P2pTransaction::SUCCESS, P2pTransaction::CANCEL, P2pTransaction::FAILED_PAYMENT]);
+
+            $table->foreign('p2p_ad_id')
+                ->references('id')
+                ->on('p2p_ads');
+            $table->foreign('partner_user_id')
+                ->references('id')
+                ->on('users');
             $table->timestamps();
         });
     }

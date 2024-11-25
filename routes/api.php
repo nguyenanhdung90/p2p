@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BankTransferDetailController;
 use App\Http\Controllers\P2pAdController;
 use App\Http\Controllers\P2PController;
+use App\Http\Controllers\P2pTransactionController;
 use App\Http\Controllers\PairCoinFiatController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +32,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/getMaxFiatPrice', [PairCoinFiatController::class, 'getMaxFiatPrice']);
 
     Route::post('/createP2pAd', [P2pAdController::class, 'create']);
+
+    Route::post('/createP2pTransaction', [P2pTransactionController::class, 'create']);
 
     Route::post('/createBankTransferDetail', [BankTransferDetailController::class, 'create']);
     Route::post('/updateBankTransferDetail', [BankTransferDetailController::class, 'update']);
