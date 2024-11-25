@@ -33,6 +33,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::post('/createBankTransferDetail', [BankTransferDetailController::class, 'create']);
     Route::post('/updateBankTransferDetail', [BankTransferDetailController::class, 'update']);
+    Route::get('/getOwnTransferDetail', [BankTransferDetailController::class, 'getOwn']);
 });
 
 Route::post('/login', [AuthController::class, 'login']);

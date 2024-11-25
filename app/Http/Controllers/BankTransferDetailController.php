@@ -37,9 +37,10 @@ class BankTransferDetailController extends Controller
         }
     }
 
-    public function getOwnAll(Request $request, BankTransferDetailInterface $bankTransferDetail)
+    public function getOwn(Request $request, BankTransferDetailInterface $bankTransferDetail)
     {
         $params['user_id'] = $request->user()->id;
+        $params['is_active'] = true;
         return response(json_encode(["success" => true, "data" => $bankTransferDetail->getAllBy($params)]), 200);
     }
 }
