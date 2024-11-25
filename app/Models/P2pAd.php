@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class P2pAd extends Model
 {
     const BANK_TRANSFER = "BANK_TRANSFER";
+    const BUY = "BUY";
+    const SELL = "SELL";
 
     protected $table = 'p2p_ads';
 

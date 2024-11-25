@@ -26,16 +26,17 @@ class CreateP2pAdRequest extends BaseRequest
      */
     public function rules(): array
     {
-        $coin = $this->get('coin');
+        $this->merge(['user_id' => $this->user()->id]);
+        $coin = $this->get('coin_currency');
         if (empty($coin)) {
             return [
-                "coin" => ["required"]
+                "coin_currency" => ["required"]
             ];
         }
-        $fiat = $this->get('fiat');
+        $fiat = $this->get('fiat_currency');
         if (empty($fiat)) {
             return [
-                "fiat" => ["required"]
+                "fiat_currency" => ["required"]
             ];
         }
         $coinFiat = CoinInfo::whereHas('fiats', function (Builder $query) use ($fiat) {
@@ -54,44 +55,48 @@ class CreateP2pAdRequest extends BaseRequest
         }
         $maxFiatPrice = $coinFiat->fiats->first()->pivot->max_fiat_price;
         return [
-            "coin" => [
+            "coin_currency" => [
                 "required",
                 Rule::exists("coin_infos", "currency")->where('is_active', true)
             ],
-            "fiat" => [
+            "fiat_currency" => [
                 "required",
                 Rule::exists("fiat_infos", "currency")
             ],
-            "price" => [
+            "fiat_price" => [
                 "required",
                 "numeric",
                 "max:" . $maxFiatPrice,
                 "min:0"
             ],
-            "amount" => [
+            "coin_amount" => [
                 "required",
                 "numeric",
                 "min:0"
             ],
-            "minimum_amount" => [
+            "coin_minimum_amount" => [
                 "required",
                 "numeric",
                 "min:0"
             ],
-            "max_amount" => [
+            "type" => [
+                "required",
+                Rule::in([P2pAd::BUY, P2pAd::SELL]),
+            ],
+            "coin_maximum_amount" => [
                 "required",
                 "numeric",
                 "min:0",
-                "max:" . $this->get('amount')
+                "max:" . $this->get('coin_amount')
             ],
             "payment_method" => [
                 "required",
                 Rule::in([P2pAd::BANK_TRANSFER]),
             ],
-            "payment_detail_id" => [
+            "bank_transfer_detail_id" => [
                 "required",
                 Rule::exists("bank_transfer_details", "id")
-            ]
+            ],
         ];
     }
 

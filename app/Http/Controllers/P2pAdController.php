@@ -9,6 +9,15 @@ class P2pAdController extends Controller
 {
     public function create(CreateP2pAdRequest $request, P2pAdInterface $p2pAd)
     {
-        return 123;
+        try {
+            $data = $request->all();
+            $ad = $p2pAd->createAd($data)->toArray();
+            return response(json_encode(["success" => true, 'data' => $ad]), 200);
+        } catch (\Exception $e) {
+            return response(json_encode([
+                'success' => false,
+                "message" => $e->getMessage()
+            ]), 500);
+        }
     }
 }
