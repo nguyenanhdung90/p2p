@@ -37,6 +37,8 @@ class P2pCreateTransactionRequest extends BaseRequest
         $this->merge(["reference" => P2pHelper::generateRandomString()]);
         $this->merge(["expired_process" => config("services.p2p.expired_time")]);
         $this->merge(["start_process" => Carbon::now()]);
+        $this->merge(["created_at" => Carbon::now()]);
+        $this->merge(["updated_at" => Carbon::now()]);
         return [
             "p2p_ad_id" => [
                 "required",

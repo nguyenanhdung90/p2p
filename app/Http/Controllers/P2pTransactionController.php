@@ -11,7 +11,7 @@ class P2pTransactionController extends Controller
     {
         try {
             $params = $request->all();
-            return response(json_encode(["success" => true, 'data' => $p2pTransaction->create($params)]), 200);
+            return response(json_encode(["success" => $p2pTransaction->initiateTransaction($params)]), 200);
         } catch (\Exception $e) {
             return response(json_encode([
                 'success' => false,
