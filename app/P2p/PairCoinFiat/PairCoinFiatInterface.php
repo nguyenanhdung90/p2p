@@ -9,4 +9,6 @@ interface PairCoinFiatInterface
     public function deletePairCoinFiat(string $coin, string $fiat): bool;
 
     public function getPairCoinFiatBy(?string $coin, ?array $fiats);
+
+    public function getMaxFiatPriceBy(string $coin, string $fiat): ?int;
 }

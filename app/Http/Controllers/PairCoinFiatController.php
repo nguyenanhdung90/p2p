@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\DeleteCoinFiatRequest;
+use App\Http\Requests\MaxFiatPriceRequest;
 use App\Http\Requests\UpdatePairCoinFiatRequest;
 use App\P2p\PairCoinFiat\PairCoinFiatInterface;
 use Illuminate\Http\JsonResponse;
@@ -45,5 +46,16 @@ class PairCoinFiatController extends Controller
         $coin = $request->get("coin");
         $fiats = $request->get("fiats");
         return response(json_encode(['success' => true, 'data' => $pairCoinFiat->getPairCoinFiatBy($coin, $fiats)]));
+    }
+
+    public function getMaxFiatPrice(MaxFiatPriceRequest $request, PairCoinFiatInterface $pairCoinFiat)
+    {
+        return response(json_encode(
+            [
+                'success' => true,
+                'data' => [
+                    'max_fiat_price' => $pairCoinFiat->getMaxFiatPriceBy($request->get("coin"), $request->get("fiat"))
+                ]
+            ]));
     }
 }

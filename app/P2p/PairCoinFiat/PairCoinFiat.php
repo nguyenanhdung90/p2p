@@ -4,6 +4,7 @@ namespace App\P2p\PairCoinFiat;
 
 use App\Models\CoinInfo;
 use App\Models\FiatInfo;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 
@@ -60,5 +61,22 @@ class PairCoinFiat implements PairCoinFiatInterface
             return $fiats;
         });
         return $coinInfo->collapse();
+    }
+
+    public function getMaxFiatPriceBy(string $coin, string $fiat): ?int
+    {
+        $coinFiat = CoinInfo::whereHas('fiats', function (Builder $query) use ($fiat) {
+            $query->where('currency', '=', $fiat);
+        })
+            ->with(["fiats" => function ($queryFiat) use ($fiat) {
+                $queryFiat->where("currency", $fiat);
+            }])
+            ->where('currency', '=', $coin)
+            ->where("is_active", true)
+            ->first();
+        if (!$coinFiat) {
+            return null;
+        }
+        return (int)$coinFiat->fiats->first()->pivot->max_fiat_price;
     }
 }

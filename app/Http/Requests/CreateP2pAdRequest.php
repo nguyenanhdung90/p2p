@@ -42,8 +42,8 @@ class CreateP2pAdRequest extends BaseRequest
         $coinFiat = CoinInfo::whereHas('fiats', function (Builder $query) use ($fiat) {
             $query->where('currency', '=', $fiat);
         })
-            ->with(["fiats" => function ($query2) use ($fiat) {
-                $query2->where("currency", $fiat);
+            ->with(["fiats" => function ($queryFiat) use ($fiat) {
+                $queryFiat->where("currency", $fiat);
             }])
             ->where('currency', '=', $coin)
             ->where("is_active", true)
@@ -95,7 +95,7 @@ class CreateP2pAdRequest extends BaseRequest
             ],
             "bank_transfer_detail_id" => [
                 "required",
-                Rule::exists("bank_transfer_details", "id")
+                Rule::exists("bank_transfer_details", "id")->where("user_id", $this->user()->id)
             ],
         ];
     }
