@@ -26,7 +26,8 @@ class CreateP2pAdRequest extends BaseRequest
      */
     public function rules(): array
     {
-        $this->merge(['user_id' => $this->user()->id]);
+        $userid = $this->user()->id;
+        $this->merge(['user_id' => $userid]);
         $coin = $this->get('coin_currency');
         if (empty($coin)) {
             return [
@@ -57,7 +58,9 @@ class CreateP2pAdRequest extends BaseRequest
         return [
             "coin_currency" => [
                 "required",
-                Rule::exists("coin_infos", "currency")->where('is_active', true)
+                Rule::exists("coin_infos", "currency")->where(function ($query) {
+                    $query->where('is_active', "=", true);
+                })
             ],
             "fiat_currency" => [
                 "required",
@@ -95,7 +98,9 @@ class CreateP2pAdRequest extends BaseRequest
             ],
             "bank_transfer_detail_id" => [
                 "required",
-                Rule::exists("bank_transfer_details", "id")->where("user_id", $this->user()->id)
+                Rule::exists("bank_transfer_details", "id")->where(function ($query) use ($userid) {
+                    $query->where('user_id', "=", true);
+                })
             ],
         ];
     }

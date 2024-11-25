@@ -26,7 +26,9 @@ class UpdatePairCoinFiatRequest extends BaseRequest
         return [
             'coin' => [
                 "required",
-                Rule::exists("coin_infos", "currency")->where("is_active", true)
+                Rule::exists("coin_infos", "currency")->where(function ($query) {
+                    $query->where('is_active', "=", true);
+                })
             ],
             'fiat' => [
                 'required'

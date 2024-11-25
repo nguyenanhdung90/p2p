@@ -15,5 +15,5 @@ class P2pTransaction extends Model
     const CANCEL = "CANCEL";
 
     protected $fillable = ['p2p_ad_id', 'partner_user_id', 'coin_amount', 'start_process', 'end_process', 'status',
-        'limit_process'];
+        'limit_process', 'reference'];
 }
