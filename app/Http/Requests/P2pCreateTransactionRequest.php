@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use App\Models\P2pAd;
+use App\P2p\P2pHelper;
+use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 
 class P2pCreateTransactionRequest extends BaseRequest
@@ -31,6 +33,10 @@ class P2pCreateTransactionRequest extends BaseRequest
             ];
         }
         $userId = $this->user()->id;
+        $this->merge(["partner_user_id" => $userId]);
+        $this->merge(["reference" => P2pHelper::generateRandomString()]);
+        $this->merge(["expired_process" => config("services.p2p.expired_time")]);
+        $this->merge(["start_process" => Carbon::now()]);
         return [
             "p2p_ad_id" => [
                 "required",

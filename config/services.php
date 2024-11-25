@@ -86,6 +86,6 @@ return [
     ],
     "default_max_length_string" => 191,
     "p2p" => [
-        "limit_time" => 90
+        "expired_time" => 90
     ]
 ];

@@ -20,9 +20,9 @@ class CreateP2pTransactionsTable extends Migration
             $table->unsignedBigInteger("p2p_ad_id");
             $table->unsignedBigInteger("partner_user_id");
             $table->unsignedBigInteger("coin_amount");
-            $table->unsignedBigInteger("limit_process");
+            $table->unsignedBigInteger("expired_process");
             $table->timestamp("start_process");
-            $table->timestamp("end_process");
+            $table->timestamp("end_process")->nullable();
             $table->enum("status", [P2pTransaction::INITIATE, P2pTransaction::CONFIRM_PAYMENT,
                 P2pTransaction::SUCCESS, P2pTransaction::CANCEL, P2pTransaction::FAILED_PAYMENT])
                 ->default(P2pTransaction::INITIATE);
