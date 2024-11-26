@@ -34,14 +34,7 @@ class P2pTransaction implements P2pTransactionInterface
                 DB::rollBack();
                 return false;
             }
-            if ($ad->type === P2pAd::SELL) {
-                $updatedP2pAmount = $wallet->p2p_amount + $ad->coin_amount;
-                DB::table('wallets')
-                    ->where("id", $wallet->id)
-                    ->update([
-                        "p2p_amount" => $updatedP2pAmount,
-                    ]);
-            } else {
+            if ($ad->type === P2pAd::BUY) {
                 $updatedP2pAmount = $wallet->p2p_amount - $ad->coin_amount;
                 if ($updatedP2pAmount < 0) {
                     DB::rollBack();
