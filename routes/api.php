@@ -35,6 +35,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::post('/createP2pTransaction', [P2pTransactionController::class, 'create']);
     Route::post('/partnerTransferStatus', [P2pTransactionController::class, 'partnerTransferStatus']);
+    Route::post('/selfReceivedStatus', [P2pTransactionController::class, 'selfReceivedStatus']);
 
     Route::post('/createBankTransferDetail', [BankTransferDetailController::class, 'create']);
     Route::post('/updateBankTransferDetail', [BankTransferDetailController::class, 'update']);

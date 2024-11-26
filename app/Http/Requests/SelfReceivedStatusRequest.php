@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Models\P2pTransaction;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Validation\Rule;
+use App\Rules\P2pTransactionSelfReceivedStatus;
 
 class SelfReceivedStatusRequest extends BaseRequest
 {
@@ -26,18 +24,10 @@ class SelfReceivedStatusRequest extends BaseRequest
     public function rules()
     {
         $useId = $this->user()->id;
-        if (empty($this->get('id'))) {
-            return [
-                "id" => ["required"]
-            ];
-        }
         return [
             "id" => [
                 "required",
-                Rule::exists('p2p_transactions', 'id')->where(function ($query) use ($useId) {
-                    $query->where('partner_user_id', "!=", $useId);
-                    $query->where('status', "=", P2pTransaction::PARTNER_TRANSFER);
-                })
+                new P2pTransactionSelfReceivedStatus($useId)
             ]
         ];
     }

@@ -27,9 +27,8 @@ class P2pTransactionController extends Controller
     public function partnerTransferStatus(PartnerTransferStatusRequest $request, P2pTransactionInterface $p2pTransaction)
     {
         try {
-            $id = $request->get("id");
             $params['status'] = P2pTransaction::PARTNER_TRANSFER;
-            $updatedTransaction = $p2pTransaction->update($id, $params);
+            $updatedTransaction = $p2pTransaction->update($request->get("id"), $params);
             return response(json_encode(["success" => $updatedTransaction instanceof Model]), 200);
         } catch (\Exception $e) {
             return response(json_encode([
@@ -42,9 +41,9 @@ class P2pTransactionController extends Controller
     public function selfReceivedStatus(SelfReceivedStatusRequest $request, P2pTransactionInterface $p2pTransaction)
     {
         try {
-            $id = $request->get("id");
             $params['status'] = P2pTransaction::SELF_RECEIVED;
-            $updatedTransaction = $p2pTransaction->update($id, $params);
+            $updatedTransaction = $p2pTransaction->update($request->get("id"), $params);
+            return response(json_encode(["success" => $updatedTransaction instanceof Model]), 200);
         } catch (\Exception $e) {
             return response(json_encode([
                 'success' => false,

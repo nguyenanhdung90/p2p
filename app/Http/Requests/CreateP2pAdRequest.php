@@ -99,7 +99,7 @@ class CreateP2pAdRequest extends BaseRequest
             "bank_transfer_detail_id" => [
                 "required",
                 Rule::exists("bank_transfer_details", "id")->where(function ($query) use ($userid) {
-                    $query->where('user_id', "=", true);
+                    $query->where('user_id', "=", $userid);
                 })
             ],
         ];

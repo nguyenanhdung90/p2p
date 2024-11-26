@@ -2,8 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Models\P2pTransaction;
-use Illuminate\Validation\Rule;
+use App\Rules\P2pPartnerTransferStatus;
 
 class PartnerTransferStatusRequest extends BaseRequest
 {
@@ -12,7 +11,7 @@ class PartnerTransferStatusRequest extends BaseRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -22,16 +21,13 @@ class PartnerTransferStatusRequest extends BaseRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $useId = $this->user()->id;
         return [
             "id" => [
                 "required",
-                Rule::exists('p2p_transactions', 'id')->where(function ($query) use ($useId) {
-                    $query->where('partner_user_id', "=", $useId);
-                    $query->where('status', "=", P2pTransaction::INITIATE);
-                })
+                new P2pPartnerTransferStatus($useId)
             ]
         ];
     }
