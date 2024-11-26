@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Models\P2pAd;
 use App\Rules\ExistedCoinFiat;
+use App\Rules\MaxCoinAmountP2pAd;
 use App\Rules\MaxFiatPrice;
 use App\Rules\MinCoinAmount;
 use Illuminate\Validation\Rule;
@@ -50,7 +51,8 @@ class CreateP2pAdRequest extends BaseRequest
             "coin_amount" => [
                 "required",
                 "numeric",
-                new MinCoinAmount($this->get('coin_currency'), $this->get('fiat_currency'))
+                new MinCoinAmount($this->get('coin_currency'), $this->get('fiat_currency')),
+                new MaxCoinAmountP2pAd($userid, $this->get('coin_currency'))
             ],
             "coin_minimum_amount" => [
                 "required",
