@@ -6,7 +6,7 @@ use App\Models\P2pTransaction;
 use Carbon\Carbon;
 use Illuminate\Contracts\Validation\Rule;
 
-class P2pTransactionSelfReceivedStatus implements Rule
+class P2pReceivedPaymentTransactionRule implements Rule
 {
     private int $userId;
 
@@ -23,8 +23,8 @@ class P2pTransactionSelfReceivedStatus implements Rule
     /**
      * Determine if the validation rule passes.
      *
-     * @param  string  $attribute
-     * @param  mixed  $value
+     * @param string $attribute
+     * @param mixed $value
      * @return bool
      */
     public function passes($attribute, $value): bool
@@ -58,6 +58,6 @@ class P2pTransactionSelfReceivedStatus implements Rule
      */
     public function message(): string
     {
-        return 'Invalid transaction ads when change self received status.';
+        return 'Invalid success transaction.';
     }
 }

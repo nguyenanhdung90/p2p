@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\P2pCreateTransactionRequest;
 use App\Http\Requests\PartnerTransferStatusRequest;
-use App\Http\Requests\SelfReceivedStatusRequest;
+use App\Http\Requests\SuccessReceivedPaymentRequest;
 use App\Models\P2pTransaction;
 use App\P2p\Transactions\P2pTransactionInterface;
 use Illuminate\Database\Eloquent\Model;
@@ -38,12 +38,11 @@ class P2pTransactionController extends Controller
         }
     }
 
-    public function successStatus(SelfReceivedStatusRequest $request, P2pTransactionInterface $p2pTransaction)
+    public function successTransfer(SuccessReceivedPaymentRequest $request, P2pTransactionInterface $p2pTransaction)
     {
         try {
-            $params['status'] = P2pTransaction::SUCCESS;
-            $updatedTransaction = $p2pTransaction->update($request->get("id"), $params);
-            return response(json_encode(["success" => $updatedTransaction instanceof Model]), 200);
+            $data = $request->all();
+            return response(json_encode(["success" => $p2pTransaction->successTransfer($data)]), 200);
         } catch (\Exception $e) {
             return response(json_encode([
                 'success' => false,

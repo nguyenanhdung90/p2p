@@ -9,4 +9,6 @@ interface P2pTransactionInterface
     public function initiateTransaction(array $data): bool;
 
     public function update($id, $params): ?Model;
+
+    public function successTransfer(array $data): bool;
 }

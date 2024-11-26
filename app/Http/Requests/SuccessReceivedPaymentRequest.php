@@ -2,16 +2,16 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\P2pTransactionSelfReceivedStatus;
+use App\Rules\P2pReceivedPaymentTransactionRule;
 
-class SelfReceivedStatusRequest extends BaseRequest
+class SuccessReceivedPaymentRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -21,13 +21,15 @@ class SelfReceivedStatusRequest extends BaseRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $useId = $this->user()->id;
+        $this->merge(["user_name", $this->user()->name]);
+        $this->merge(["user_id", $this->user()->id]);
         return [
             "id" => [
                 "required",
-                new P2pTransactionSelfReceivedStatus($useId)
+                new P2pReceivedPaymentTransactionRule($useId)
             ]
         ];
     }
