@@ -5,7 +5,7 @@ namespace App\Rules;
 use App\Models\P2pAd;
 use Illuminate\Contracts\Validation\Rule;
 
-class RangeAmountCoinTransaction implements Rule
+class RangeAmountCoinTransactionRule implements Rule
 {
     private int $p2pAdId;
 

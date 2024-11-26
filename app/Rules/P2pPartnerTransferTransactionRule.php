@@ -6,7 +6,7 @@ use App\Models\P2pTransaction;
 use Carbon\Carbon;
 use Illuminate\Contracts\Validation\Rule;
 
-class P2pPartnerTransferStatus implements Rule
+class P2PPartnerTransferRule implements Rule
 {
     private int $userId;
 

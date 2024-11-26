@@ -6,7 +6,7 @@ use App\Models\CoinInfo;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Database\Eloquent\Builder;
 
-class ExistedCoinFiat implements Rule
+class ExistedCoinFiatRule implements Rule
 {
     private string $coinCurrency;
 

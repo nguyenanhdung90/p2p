@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use App\P2p\P2pHelper;
-use App\Rules\RangeAmountCoinTransaction;
+use App\Rules\RangeAmountCoinTransactionRule;
 use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 
@@ -41,7 +41,7 @@ class P2pCreateTransactionRequest extends BaseRequest
             "coin_amount" => [
                 "required",
                 "numeric",
-                new RangeAmountCoinTransaction($this->get("p2p_ad_id")),
+                new RangeAmountCoinTransactionRule($this->get("p2p_ad_id")),
             ]
         ];
     }

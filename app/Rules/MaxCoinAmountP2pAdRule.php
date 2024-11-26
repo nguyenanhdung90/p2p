@@ -5,7 +5,7 @@ namespace App\Rules;
 use App\Models\Wallet;
 use Illuminate\Contracts\Validation\Rule;
 
-class MaxCoinAmountP2pAd implements Rule
+class MaxCoinAmountP2PAdRule implements Rule
 {
     private string $userName;
 

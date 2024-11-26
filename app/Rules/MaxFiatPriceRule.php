@@ -6,7 +6,7 @@ use App\Models\CoinInfo;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Database\Eloquent\Builder;
 
-class MaxFiatPrice implements Rule
+class MaxFiatPriceRule implements Rule
 {
     private string $coinCurrency;
 

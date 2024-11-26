@@ -3,10 +3,10 @@
 namespace App\Http\Requests;
 
 use App\Models\P2pAd;
-use App\Rules\ExistedCoinFiat;
-use App\Rules\MaxCoinAmountP2pAd;
-use App\Rules\MaxFiatPrice;
-use App\Rules\MinCoinAmount;
+use App\Rules\ExistedCoinFiatRule;
+use App\Rules\MaxCoinAmountP2PAdRule;
+use App\Rules\MaxFiatPriceRule;
+use App\Rules\MinCoinAmountRule;
 use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 
@@ -46,24 +46,24 @@ class CreateP2pAdRequest extends BaseRequest
             "fiat_currency" => [
                 "required",
                 Rule::exists("fiat_infos", "currency"),
-                new ExistedCoinFiat($this->get('coin_currency'))
+                new ExistedCoinFiatRule($this->get('coin_currency'))
             ],
             "fiat_price" => [
                 "required",
                 "numeric",
                 "min:0",
-                new MaxFiatPrice($this->get('coin_currency'), $this->get('fiat_currency'))
+                new MaxFiatPriceRule($this->get('coin_currency'), $this->get('fiat_currency'))
             ],
             "coin_amount" => [
                 "required",
                 "numeric",
-                new MinCoinAmount($this->get('coin_currency'), $this->get('fiat_currency')),
-                new MaxCoinAmountP2pAd($userName, $this->get('coin_currency'))
+                new MinCoinAmountRule($this->get('coin_currency'), $this->get('fiat_currency')),
+                new MaxCoinAmountP2PAdRule($userName, $this->get('coin_currency'))
             ],
             "coin_minimum_amount" => [
                 "required",
                 "numeric",
-                new MinCoinAmount($this->get('coin_currency'), $this->get('fiat_currency'))
+                new MinCoinAmountRule($this->get('coin_currency'), $this->get('fiat_currency'))
             ],
             "coin_maximum_amount" => [
                 "required",
