@@ -2,6 +2,8 @@
 
 namespace App\P2p\Transactions;
 
+use App\Models\P2pTransaction as P2pTransactionModel;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -51,5 +53,18 @@ class P2pTransaction implements P2pTransactionInterface
             Log::error("Error: " . $e->getMessage());
             return false;
         }
+    }
+
+    public function update($id, $params): ?Model
+    {
+        $transaction = P2pTransactionModel::find($id);
+        if (!$transaction) {
+            return null;
+        }
+        if (!empty($params['status'])) {
+            $transaction->status = $params['status'];
+        }
+        $transaction->save();
+        return $transaction;
     }
 }
