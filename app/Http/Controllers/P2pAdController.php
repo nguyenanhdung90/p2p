@@ -11,8 +11,7 @@ class P2pAdController extends Controller
     {
         try {
             $data = $request->all();
-            $ad = $p2pAd->createAd($data)->toArray();
-            return response(json_encode(["success" => true, 'data' => $ad]), 200);
+            return response(json_encode(["success" => $p2pAd->initiateAd($data)]), 200);
         } catch (\Exception $e) {
             return response(json_encode([
                 'success' => false,

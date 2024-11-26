@@ -48,6 +48,6 @@ class MaxCoinAmountP2pAd implements Rule
      */
     public function message(): string
     {
-        return 'Amount of wallet is not enough.';
+        return 'Amount of p2p wallet is not enough.';
     }
 }

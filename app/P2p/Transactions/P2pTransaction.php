@@ -2,6 +2,7 @@
 
 namespace App\P2p\Transactions;
 
+use App\Models\P2pAd;
 use App\Models\P2pTransaction as P2pTransactionModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
@@ -29,17 +30,34 @@ class P2pTransaction implements P2pTransactionInterface
                 ->where("is_active", true)
                 ->lockForUpdate()
                 ->first();
-            if (!$wallet || $wallet->amount < $ad->coin_amount) {
+            if (!$wallet) {
                 DB::rollBack();
                 return false;
             }
-            DB::table('wallets')
-                ->where("id", $wallet->id)
-                ->update([
-                    "amount" => $wallet->amount - $ad->coin_amount,
-                    "locked_amount" => $ad->coin_amount,
-                ]);
-            Arr::forget($data, 'user_name');
+            if ($ad->type === P2pAd::SELL) {
+                $updatedP2pAmount = $wallet->p2p_amount + $ad->coin_amount;
+                DB::table('wallets')
+                    ->where("id", $wallet->id)
+                    ->update([
+                        "p2p_amount" => $updatedP2pAmount,
+                    ]);
+            } else {
+                $updatedP2pAmount = $wallet->p2p_amount - $ad->coin_amount;
+                if ($updatedP2pAmount < 0) {
+                    DB::rollBack();
+                    return false;
+                }
+                $updatedLockedAmount = $wallet->locked_amount + $ad->coin_amount;
+                DB::table('wallets')
+                    ->where("id", $wallet->id)
+                    ->update([
+                        "p2p_amount" => $updatedP2pAmount,
+                        "locked_amount" => $updatedLockedAmount,
+                    ]);
+            }
+
+            Arr::only($data, 'p2p_ad_id', 'partner_user_id', 'coin_amount', 'start_process', 'end_process', 'status',
+                'expired_process', 'reference', 'created_at', 'updated_at');
             DB::table('p2p_transactions')->insert($data);
             DB::table('p2p_ads')
                 ->where("id", $data["p2p_ad_id"])

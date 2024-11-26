@@ -7,6 +7,7 @@ use App\Rules\ExistedCoinFiat;
 use App\Rules\MaxCoinAmountP2pAd;
 use App\Rules\MaxFiatPrice;
 use App\Rules\MinCoinAmount;
+use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 
 class CreateP2pAdRequest extends BaseRequest
@@ -29,7 +30,12 @@ class CreateP2pAdRequest extends BaseRequest
     public function rules(): array
     {
         $userid = $this->user()->id;
+        $userName = $this->user()->name;
         $this->merge(['user_id' => $userid]);
+        $this->merge(['user_name' => $userName]);
+        $this->merge(['is_active' => true]);
+        $this->merge(['created_at' => Carbon::now()]);
+        $this->merge(['updated_at' => Carbon::now()]);
         return [
             "coin_currency" => [
                 "required",
@@ -52,7 +58,7 @@ class CreateP2pAdRequest extends BaseRequest
                 "required",
                 "numeric",
                 new MinCoinAmount($this->get('coin_currency'), $this->get('fiat_currency')),
-                new MaxCoinAmountP2pAd($userid, $this->get('coin_currency'))
+                new MaxCoinAmountP2pAd($userName, $this->get('coin_currency'))
             ],
             "coin_minimum_amount" => [
                 "required",
