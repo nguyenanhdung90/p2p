@@ -2,12 +2,10 @@
 
 namespace App\Http\Requests;
 
-use App\Models\CoinInfo;
 use App\Models\P2pAd;
 use App\Rules\ExistedCoinFiat;
 use App\Rules\MaxFiatPrice;
 use App\Rules\MinCoinAmount;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\Rule;
 
 class CreateP2pAdRequest extends BaseRequest
@@ -17,7 +15,7 @@ class CreateP2pAdRequest extends BaseRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -62,7 +60,7 @@ class CreateP2pAdRequest extends BaseRequest
             "coin_maximum_amount" => [
                 "required",
                 "numeric",
-                "min:0",
+                "min:" . $this->get('coin_minimum_amount'),
                 "max:" . $this->get('coin_amount')
             ],
             "type" => [

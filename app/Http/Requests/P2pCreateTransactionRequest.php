@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use App\Models\P2pAd;
 use App\P2p\P2pHelper;
+use App\Rules\RangeAmountCoinTransaction;
 use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 
@@ -21,17 +21,6 @@ class P2pCreateTransactionRequest extends BaseRequest
 
     public function rules(): array
     {
-        $p2pAdId = $this->get("p2p_ad_id");
-        if (empty($p2pAdId)) {
-            return [
-                'p2p_ad_id' => ["required"]
-            ];
-        }
-        if (!P2pAd::find($p2pAdId)) {
-            return [
-                'p2p_ad_not_existed' => ["required"]
-            ];
-        }
         $userId = $this->user()->id;
         $name = $this->user()->name;
         $this->merge(["partner_user_id" => $userId]);
@@ -52,16 +41,8 @@ class P2pCreateTransactionRequest extends BaseRequest
             "coin_amount" => [
                 "required",
                 "numeric",
-                "min:" . P2pAd::find($p2pAdId)->coin_minimum_amount,
-                "max:" . P2pAd::find($p2pAdId)->coin_maximum_amount,
+                new RangeAmountCoinTransaction($this->get("p2p_ad_id")),
             ]
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            "p2p_ad_not_existed.required" => "Ad does not exist."
         ];
     }
 }
