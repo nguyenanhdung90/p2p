@@ -4,6 +4,9 @@ namespace App\Http\Requests;
 
 use App\Models\CoinInfo;
 use App\Models\P2pAd;
+use App\Rules\ExistedCoinFiat;
+use App\Rules\MaxFiatPrice;
+use App\Rules\MinCoinAmount;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\Rule;
 
@@ -28,33 +31,6 @@ class CreateP2pAdRequest extends BaseRequest
     {
         $userid = $this->user()->id;
         $this->merge(['user_id' => $userid]);
-        $coin = $this->get('coin_currency');
-        if (empty($coin)) {
-            return [
-                "coin_currency" => ["required"]
-            ];
-        }
-        $fiat = $this->get('fiat_currency');
-        if (empty($fiat)) {
-            return [
-                "fiat_currency" => ["required"]
-            ];
-        }
-        $coinFiat = CoinInfo::whereHas('fiats', function (Builder $query) use ($fiat) {
-            $query->where('currency', '=', $fiat);
-        })
-            ->with(["fiats" => function ($queryFiat) use ($fiat) {
-                $queryFiat->where("currency", $fiat);
-            }])
-            ->where('currency', '=', $coin)
-            ->where("is_active", true)
-            ->first();
-        if (!$coinFiat) {
-            return [
-                "coin_fiat" => ["required"]
-            ];
-        }
-        $maxFiatPrice = $coinFiat->fiats->first()->pivot->max_fiat_price;
         return [
             "coin_currency" => [
                 "required",
@@ -64,33 +40,34 @@ class CreateP2pAdRequest extends BaseRequest
             ],
             "fiat_currency" => [
                 "required",
-                Rule::exists("fiat_infos", "currency")
+                Rule::exists("fiat_infos", "currency"),
+                new ExistedCoinFiat($this->get('coin_currency'))
             ],
             "fiat_price" => [
                 "required",
                 "numeric",
-                "max:" . $maxFiatPrice,
-                "min:0"
+                "min:0",
+                new MaxFiatPrice($this->get('coin_currency'), $this->get('fiat_currency'))
             ],
             "coin_amount" => [
                 "required",
                 "numeric",
-                "min:0"
+                new MinCoinAmount($this->get('coin_currency'), $this->get('fiat_currency'))
             ],
             "coin_minimum_amount" => [
                 "required",
                 "numeric",
-                "min:0"
-            ],
-            "type" => [
-                "required",
-                Rule::in([P2pAd::BUY, P2pAd::SELL]),
+                new MinCoinAmount($this->get('coin_currency'), $this->get('fiat_currency'))
             ],
             "coin_maximum_amount" => [
                 "required",
                 "numeric",
                 "min:0",
                 "max:" . $this->get('coin_amount')
+            ],
+            "type" => [
+                "required",
+                Rule::in([P2pAd::BUY, P2pAd::SELL]),
             ],
             "payment_method" => [
                 "required",
@@ -102,13 +79,6 @@ class CreateP2pAdRequest extends BaseRequest
                     $query->where('user_id', "=", $userid);
                 })
             ],
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            "coin_fiat.required" => "Coin fiat pair does not exist."
         ];
     }
 }

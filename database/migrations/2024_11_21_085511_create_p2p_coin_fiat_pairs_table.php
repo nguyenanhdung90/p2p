@@ -17,7 +17,8 @@ class CreateP2pCoinFiatPairsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('coin_info_id');
             $table->unsignedBigInteger('fiat_info_id');
-            $table->unsignedBigInteger("max_fiat_price");
+            $table->unsignedBigInteger("max_fiat_price")->nullable();
+            $table->unsignedBigInteger("min_amount_coin")->nullable();
             $table->foreign('coin_info_id')
                 ->references('id')
                 ->on('coin_infos');

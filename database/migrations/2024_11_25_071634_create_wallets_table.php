@@ -17,6 +17,7 @@ class CreateWalletsTable extends Migration
             $table->id();
             $table->string('user_name', 191);
             $table->unsignedBigInteger('amount')->default(0);
+            $table->unsignedBigInteger('p2p_amount')->default(0);
             $table->unsignedBigInteger('locked_amount')->default(0);
             $table->char('currency', 20);
             $table->boolean("is_active")->default(true);

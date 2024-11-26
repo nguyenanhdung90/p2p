@@ -16,7 +16,7 @@ class CoinInfo extends Model
     public function fiats(): BelongsToMany
     {
         return $this->belongsToMany(FiatInfo::class, 'p2p_coin_fiat_pairs', 'coin_info_id', 'fiat_info_id')
-            ->withPivot('max_fiat_price')
+            ->withPivot(['max_fiat_price', 'min_amount_coin'])
             ->withTimestamps();
     }
 }

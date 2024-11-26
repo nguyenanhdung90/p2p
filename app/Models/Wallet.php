@@ -10,7 +10,7 @@ class Wallet extends Model
     protected $table = 'wallets';
 
     protected $fillable = [
-        'user_name', 'amount', 'locked_amount', 'currency', 'is_active'
+        'user_name', 'amount', 'locked_amount', 'p2p_amount', 'currency', 'is_active'
     ];
 
     public function coinInfo(): HasOne

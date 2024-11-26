@@ -38,10 +38,10 @@ class P2pTransactionController extends Controller
         }
     }
 
-    public function selfReceivedStatus(SelfReceivedStatusRequest $request, P2pTransactionInterface $p2pTransaction)
+    public function successStatus(SelfReceivedStatusRequest $request, P2pTransactionInterface $p2pTransaction)
     {
         try {
-            $params['status'] = P2pTransaction::SELF_RECEIVED;
+            $params['status'] = P2pTransaction::SUCCESS;
             $updatedTransaction = $p2pTransaction->update($request->get("id"), $params);
             return response(json_encode(["success" => $updatedTransaction instanceof Model]), 200);
         } catch (\Exception $e) {

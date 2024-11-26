@@ -24,8 +24,7 @@ class CreateP2pTransactionsTable extends Migration
             $table->timestamp("start_process");
             $table->timestamp("end_process")->nullable();
             $table->enum("status", [P2pTransaction::INITIATE, P2pTransaction::PARTNER_TRANSFER,
-                P2pTransaction::SUCCESS, P2pTransaction::CANCEL, P2pTransaction::SELF_RECEIVED,
-                P2pTransaction::CLAIM_FAILED_PAYMENT])
+                P2pTransaction::SUCCESS, P2pTransaction::CANCEL, P2pTransaction::CLAIM_FAILED_PAYMENT])
                 ->default(P2pTransaction::INITIATE);
 
             $table->foreign('p2p_ad_id')
