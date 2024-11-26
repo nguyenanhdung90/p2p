@@ -11,14 +11,17 @@ use Illuminate\Http\Request;
 
 class PairCoinFiatController extends Controller
 {
-    public function update(UpdatePairCoinFiatRequest $request, PairCoinFiatInterface $pairCoinFiat): JsonResponse
+    public function update(UpdatePairCoinFiatRequest $request, PairCoinFiatInterface $pairCoinFiat)
     {
         try {
             $coin = $request->get('coin');
             $fiat = $request->get('fiat');
             $maxFiatPrice = $request->get('max_fiat_price');
+            $minAmountCoin = $request->get('min_amount_coin');
             return response(json_encode([
-                "success" => $pairCoinFiat->updatePairCoinFiat($coin, $fiat, $maxFiatPrice)]), 200);
+                "success" => $pairCoinFiat->updatePairCoinFiat($coin, $fiat, $maxFiatPrice, $minAmountCoin),
+                "data" => $pairCoinFiat->getCoinFiatPivotBy($coin, $fiat)
+            ]), 200);
         } catch (\Exception $e) {
             return response(json_encode([
                 'success' => false,
@@ -27,7 +30,7 @@ class PairCoinFiatController extends Controller
         }
     }
 
-    public function delete(DeleteCoinFiatRequest $request, PairCoinFiatInterface $pairCoinFiat): JsonResponse
+    public function delete(DeleteCoinFiatRequest $request, PairCoinFiatInterface $pairCoinFiat)
     {
         try {
             $coin = $request->get('coin');
@@ -48,12 +51,12 @@ class PairCoinFiatController extends Controller
         return response(json_encode(['success' => true, 'data' => $pairCoinFiat->getPairCoinFiatBy($coin, $fiats)]));
     }
 
-    public function getMaxFiatPrice(MaxFiatPriceRequest $request, PairCoinFiatInterface $pairCoinFiat)
+    public function getAttribute(MaxFiatPriceRequest $request, PairCoinFiatInterface $pairCoinFiat)
     {
         return response(json_encode(
                 [
                     'success' => true,
-                    'data' => $pairCoinFiat->getMaxFiatPriceBy($request->get("coin"), $request->get("fiat"))
+                    'data' => $pairCoinFiat->getCoinFiatPivotBy($request->get("coin"), $request->get("fiat"))
                 ]
             )
         );

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
 
 class PairCoinFiat implements PairCoinFiatInterface
 {
-    public function updatePairCoinFiat(string $coin, string $fiat, int $maxFiatPrice): bool
+    public function updatePairCoinFiat(string $coin, string $fiat, ?int $maxFiatPrice, ?int $minAmountCoin): bool
     {
         try {
             $coinInfo = CoinInfo::where("currency", $coin)->where('is_active', true)->first();
@@ -17,7 +17,17 @@ class PairCoinFiat implements PairCoinFiatInterface
             if (empty($fiat)) {
                 return false;
             }
-            $coinInfo->fiats()->syncWithoutDetaching([$fiat->id => ['max_fiat_price' => $maxFiatPrice]]);
+            $data = [];
+            if (!empty($maxFiatPrice)) {
+                $data["max_fiat_price"] = $maxFiatPrice;
+            }
+            if (!empty($minAmountCoin)) {
+                $data["min_amount_coin"] = $minAmountCoin;
+            }
+            if (empty($data)) {
+                return false;
+            }
+            $coinInfo->fiats()->syncWithoutDetaching([$fiat->id => $data]);
             return true;
         } catch (\Exception $e) {
             Log::error("mapFiats: " . $e->getMessage());
@@ -62,7 +72,7 @@ class PairCoinFiat implements PairCoinFiatInterface
         return $coinInfo->collapse();
     }
 
-    public function getMaxFiatPriceBy(?string $coin, ?string $fiat): Collection
+    public function getCoinFiatPivotBy(?string $coin, ?string $fiat): Collection
     {
         $query = CoinInfo::query()->where('is_active', true);
         if ($coin) {
@@ -82,7 +92,8 @@ class PairCoinFiat implements PairCoinFiatInterface
                 return [
                     "coin" => $coin->currency,
                     "fiat" => $fiat->currency,
-                    "max_fiat_price" => $fiat->pivot->max_fiat_price
+                    "max_fiat_price" => $fiat->pivot->max_fiat_price,
+                    "min_amount_coin" => $fiat->pivot->min_amount_coin
                 ];
             });
             return $fiats;

@@ -24,7 +24,7 @@ class P2pTransactionController extends Controller
         }
     }
 
-    public function partnerTransferStatus(PartnerTransferStatusRequest $request, P2pTransactionInterface $p2pTransaction)
+    public function partnerTransfer(PartnerTransferStatusRequest $request, P2pTransactionInterface $p2pTransaction)
     {
         try {
             $params['status'] = P2pTransaction::PARTNER_TRANSFER;

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use App\Models\P2pAd;
 use App\Rules\ExistedCoinFiatRule;
-use App\Rules\MaxCoinAmountP2PAdRule;
+use App\Rules\MaxCoinAmountP2pAdRule;
 use App\Rules\MaxFiatPriceRule;
 use App\Rules\MinCoinAmountRule;
 use Carbon\Carbon;
@@ -58,7 +58,7 @@ class CreateP2pAdRequest extends BaseRequest
                 "required",
                 "numeric",
                 new MinCoinAmountRule($this->get('coin_currency'), $this->get('fiat_currency')),
-                new MaxCoinAmountP2PAdRule($userName, $this->get('coin_currency'))
+                new MaxCoinAmountP2pAdRule($userName, $this->get('coin_currency'))
             ],
             "coin_minimum_amount" => [
                 "required",
@@ -80,7 +80,7 @@ class CreateP2pAdRequest extends BaseRequest
                 Rule::in([P2pAd::BANK_TRANSFER]),
             ],
             "bank_transfer_detail_id" => [
-                "required",
+                "required_if:type,=," . P2pAd::SELL,
                 Rule::exists("bank_transfer_details", "id")->where(function ($query) use ($userid) {
                     $query->where('user_id', "=", $userid);
                 })

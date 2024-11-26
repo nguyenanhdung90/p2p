@@ -3,7 +3,6 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BankTransferDetailController;
 use App\Http\Controllers\P2pAdController;
-use App\Http\Controllers\P2PController;
 use App\Http\Controllers\P2pTransactionController;
 use App\Http\Controllers\PairCoinFiatController;
 use Illuminate\Support\Facades\Route;
@@ -29,12 +28,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/updatePairCoinFiat', [PairCoinFiatController::class, 'update']);
     Route::post('/deletePairCoinFiat', [PairCoinFiatController::class, 'delete']);
     Route::get('/getPairCoinFiat', [PairCoinFiatController::class, 'getBy']);
-    Route::get('/getMaxFiatPrice', [PairCoinFiatController::class, 'getMaxFiatPrice']);
+    Route::get('/getAttributeCoinFiat', [PairCoinFiatController::class, 'getAttribute']);
 
     Route::post('/createP2pAd', [P2pAdController::class, 'create']);
 
     Route::post('/createP2pTransaction', [P2pTransactionController::class, 'create']);
-    Route::post('/partnerTransferStatus', [P2pTransactionController::class, 'partnerTransferStatus']);
+    Route::post('/partnerTransferStatus', [P2pTransactionController::class, 'partnerTransfer']);
     Route::post('/successTransfer', [P2pTransactionController::class, 'successTransfer']);
 
     Route::post('/createBankTransferDetail', [BankTransferDetailController::class, 'create']);

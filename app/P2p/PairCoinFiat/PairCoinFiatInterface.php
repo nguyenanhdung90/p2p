@@ -6,11 +6,11 @@ use Illuminate\Support\Collection;
 
 interface PairCoinFiatInterface
 {
-    public function updatePairCoinFiat(string $coin, string $fiat, int $maxFiatPrice): bool;
+    public function updatePairCoinFiat(string $coin, string $fiat, ?int $maxFiatPrice, ?int $minAmountCoin): bool;
 
     public function deletePairCoinFiat(string $coin, string $fiat): bool;
 
     public function getPairCoinFiatBy(?string $coin, ?array $fiats);
 
-    public function getMaxFiatPriceBy(?string $coin, ?string $fiat): Collection;
+    public function getCoinFiatPivotBy(?string $coin, ?string $fiat): Collection;
 }

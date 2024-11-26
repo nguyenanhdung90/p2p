@@ -25,7 +25,7 @@ class CreateP2pAdsTable extends Migration
             $table->enum("type", ["SELL", "BUY"]);
             $table->unsignedBigInteger("user_id");
             $table->enum("payment_method", [P2pAd::BANK_TRANSFER]);
-            $table->unsignedBigInteger("bank_transfer_detail_id");
+            $table->unsignedBigInteger("bank_transfer_detail_id")->nullable();
             $table->boolean("is_active")->default(1);
             $table->timestamps();
         });
