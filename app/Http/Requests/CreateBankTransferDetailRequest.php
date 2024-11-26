@@ -21,7 +21,7 @@ class CreateBankTransferDetailRequest extends BaseRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             "account_name" => [

@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateBankTransferDetailRequest;
 use App\P2p\BankTransferDetails\BankTransferDetailInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 
 class BankTransferDetailController extends Controller
@@ -17,7 +18,10 @@ class BankTransferDetailController extends Controller
             $data = $request->validated();
             $data['user_id'] = $request->user()->id;
             $result = $bankTransferDetail->create($data);
-            return response(json_encode(["success" => $result instanceof Model]), 200);
+            return response(json_encode([
+                "success" => $result instanceof Model,
+                'data' => $bankTransferDetail->getAllBy(Arr::only($data, ['id', 'user_id']))->first()->makeHidden(["user_id"])
+            ]), 200);
         } catch (\Exception $e) {
             Log::error("Exception createBankTransferDetail: " . $e->getMessage());
             return response(json_encode(["success" => false, "message" => $e->getMessage()]), 200);
@@ -29,8 +33,11 @@ class BankTransferDetailController extends Controller
         try {
             $data = $request->validated();
             $data['user_id'] = $request->user()->id;
-            $isSuccess = $bankTransferDetail->update($data);
-            return response(json_encode(["success" => $isSuccess]), 200);
+            return response(json_encode([
+                "success" => $bankTransferDetail->update($data),
+                'data' => $bankTransferDetail->getAllBy(Arr::only($data, ['id', 'user_id']))->first()->makeHidden(["user_id"])
+            ]),
+                200);
         } catch (\Exception $e) {
             Log::error("Exception createBankTransferDetail: " . $e->getMessage());
             return response(json_encode(["success" => false, "message" => $e->getMessage()]), 200);

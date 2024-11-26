@@ -41,7 +41,13 @@ class BankTransferDetail implements BankTransferDetailInterface
 
     public function getAllBy(array $params)
     {
-        $query = BankTransferDetailModel::query()->where('is_active', true);
+        $query = BankTransferDetailModel::query();
+        if (!empty($params['id'])) {
+            $query->where('id', $params['id']);
+        }
+        if (isset($params['is_active'])) {
+            $query->where('is_active', $params['is_active']);
+        }
         if (!empty($params['user_id'])) {
             $query->where('user_id', $params['user_id']);
         }
