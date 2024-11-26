@@ -19,6 +19,7 @@ class WalletSeeder extends Seeder
             ],
             [
                 "amount" => 300000000000,
+                "p2p_amount" => 200000000000,
             ]
         );
         Wallet::updateOrCreate(
@@ -27,7 +28,8 @@ class WalletSeeder extends Seeder
                 "currency" => "USDT",
             ],
             [
-                "amount" => 600000000
+                "amount" => 600000000,
+                "p2p_amount" => 500000000,
             ]
         );
         Wallet::updateOrCreate(
@@ -36,7 +38,8 @@ class WalletSeeder extends Seeder
                 "currency" => "NOT",
             ],
             [
-                "amount" => 300000000000
+                "amount" => 300000000000,
+                "p2p_amount" => 200000000000,
             ]
         );
         Wallet::updateOrCreate(
@@ -45,7 +48,8 @@ class WalletSeeder extends Seeder
                 "currency" => "PAYN",
             ],
             [
-                "amount" => 300000000000
+                "amount" => 300000000000,
+                "p2p_amount" => 200000000000,
             ]
         );
         Wallet::updateOrCreate(
@@ -54,7 +58,8 @@ class WalletSeeder extends Seeder
                 "currency" => "BTC",
             ],
             [
-                "amount" => 50000000000
+                "amount" => 50000000000,
+                "p2p_amount" => 40000000000,
             ]
         );
         Wallet::updateOrCreate(
@@ -64,6 +69,7 @@ class WalletSeeder extends Seeder
             ],
             [
                 "amount" => 300000000000,
+                "p2p_amount" => 200000000000,
             ]
         );
         Wallet::updateOrCreate(
@@ -72,7 +78,8 @@ class WalletSeeder extends Seeder
                 "currency" => "USDT",
             ],
             [
-                "amount" => 600000000
+                "amount" => 600000000,
+                "p2p_amount" => 500000000,
             ]
         );
         Wallet::updateOrCreate(
@@ -81,7 +88,8 @@ class WalletSeeder extends Seeder
                 "currency" => "NOT",
             ],
             [
-                "amount" => 300000000000
+                "amount" => 300000000000,
+                "p2p_amount" => 200000000000,
             ]
         );
         Wallet::updateOrCreate(
@@ -90,7 +98,8 @@ class WalletSeeder extends Seeder
                 "currency" => "PAYN",
             ],
             [
-                "amount" => 300000000000
+                "amount" => 300000000000,
+                "p2p_amount" => 200000000000,
             ]
         );
         Wallet::updateOrCreate(
@@ -99,7 +108,8 @@ class WalletSeeder extends Seeder
                 "currency" => "BTC",
             ],
             [
-                "amount" => 50000000000
+                "amount" => 50000000000,
+                "p2p_amount" => 40000000000,
             ]
         );
     }

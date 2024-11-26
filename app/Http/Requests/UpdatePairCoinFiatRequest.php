@@ -34,8 +34,11 @@ class UpdatePairCoinFiatRequest extends BaseRequest
                 'required'
             ],
             'max_fiat_price' => [
-                'required'
-            ]
+                'numeric'
+            ],
+            'min_amount_coin' => [
+                'numeric'
+            ],
         ];
     }
 }
