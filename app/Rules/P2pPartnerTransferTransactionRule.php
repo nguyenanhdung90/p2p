@@ -10,6 +10,8 @@ class P2pPartnerTransferTransactionRule implements Rule
 {
     private int $userId;
 
+    private string $message = "";
+
     /**
      * Create a new rule instance.
      *
@@ -36,14 +38,15 @@ class P2pPartnerTransferTransactionRule implements Rule
                 $q->where("user_id", "!=", $this->userId);
                 $q->where("is_active", false);
             }, "=", 1)
-            ->with("p2pAd")
             ->first();
         if (!$transaction) {
+            $this->message = "Transaction is invalid.";
             return false;
         }
         $startTime = Carbon::createFromFormat('Y-m-d H:i:s', $transaction->start_process);
         $diff = Carbon::now()->diffInSeconds($startTime);
         if ($diff > $transaction->expired_process) {
+            $this->message = "Transaction is expired.";
             return false;
         }
         return true;
@@ -56,6 +59,6 @@ class P2pPartnerTransferTransactionRule implements Rule
      */
     public function message(): string
     {
-        return 'Invalid transaction ads when change to partner transfer status.';
+        return empty($this->message) ? 'Invalid transaction' : $this->message;
     }
 }
