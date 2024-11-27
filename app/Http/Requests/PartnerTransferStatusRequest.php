@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\P2PPartnerTransferRule;
+use App\Rules\P2pPartnerTransferTransactionRule;
 
 class PartnerTransferStatusRequest extends BaseRequest
 {
@@ -27,7 +27,7 @@ class PartnerTransferStatusRequest extends BaseRequest
         return [
             "id" => [
                 "required",
-                new P2PPartnerTransferRule($useId)
+                new P2pPartnerTransferTransactionRule($useId)
             ]
         ];
     }

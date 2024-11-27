@@ -6,7 +6,7 @@ use App\Models\P2pTransaction;
 use Carbon\Carbon;
 use Illuminate\Contracts\Validation\Rule;
 
-class P2PPartnerTransferRule implements Rule
+class P2pPartnerTransferTransactionRule implements Rule
 {
     private int $userId;
 
@@ -34,7 +34,7 @@ class P2PPartnerTransferRule implements Rule
             ->where("status", P2pTransaction::INITIATE)
             ->whereHas("p2pAd", function ($q) {
                 $q->where("user_id", "!=", $this->userId);
-                $q->where("is_active", true);
+                $q->where("is_active", false);
             }, "=", 1)
             ->with("p2pAd")
             ->first();

@@ -8,5 +8,5 @@ interface P2pTransactionInterface
 {
     public function update($id, $params): ?Model;
 
-    public function findBy(int $id): ?Model;
+    public function getTranById(int $id): array;
 }

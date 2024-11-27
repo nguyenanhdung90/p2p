@@ -20,10 +20,9 @@ class P2pTransactionController extends Controller
     ) {
         try {
             $result = $initiateTransaction->process($request->all());
-            $tran = $p2pTransaction->findBy($result);
             return response(json_encode([
                 "success" => is_numeric($result),
-                "data" => $tran instanceof Model ? $tran->toArray() : []
+                "data" => $p2pTransaction->getTranById($result)
             ]));
         } catch (\Exception $e) {
             return response(json_encode([
@@ -38,7 +37,10 @@ class P2pTransactionController extends Controller
         try {
             $params['status'] = P2pTransaction::PARTNER_TRANSFER;
             $updatedTransaction = $p2pTransaction->update($request->get("id"), $params);
-            return response(json_encode(["success" => $updatedTransaction instanceof Model]), 200);
+            return response(json_encode([
+                "success" => $updatedTransaction instanceof Model,
+                "data" => $updatedTransaction instanceof Model ? $updatedTransaction->toArray() : []
+            ]));
         } catch (\Exception $e) {
             return response(json_encode([
                 'success' => false,
@@ -47,11 +49,17 @@ class P2pTransactionController extends Controller
         }
     }
 
-    public function successTransfer(SuccessReceivedPaymentRequest $request, ConfirmTransferInterface $confirmTransfer)
-    {
+    public function successTransfer(
+        SuccessReceivedPaymentRequest $request,
+        ConfirmTransferInterface $confirmTransfer,
+        P2pTransactionInterface $p2pTransaction
+    ) {
         try {
-            $data = $request->all();
-            return response(json_encode(["success" => $confirmTransfer->process($data)]), 200);
+            return response(json_encode([
+                "success" => $confirmTransfer->process($request->all()),
+                "data" => $p2pTransaction->getTranById($request->get("id"))
+
+            ]));
         } catch (\Exception $e) {
             return response(json_encode([
                 'success' => false,

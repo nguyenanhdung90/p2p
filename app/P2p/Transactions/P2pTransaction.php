@@ -21,8 +21,12 @@ class P2pTransaction implements P2pTransactionInterface
         return $transaction;
     }
 
-    public function findBy(int $id): ?Model
+    public function getTranById(int $id): array
     {
-        return P2pTransactionModel::find($id);
+        $tran = P2pTransactionModel::find($id);
+        if (!$tran) {
+            return [];
+        }
+        return $tran->toArray();
     }
 }
