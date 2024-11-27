@@ -22,7 +22,7 @@ class P2pTransactionController extends Controller
         try {
             $result = $initiateTransaction->process($request->all());
             if (is_numeric($result)) {
-                CancelExpiredP2pTransaction::dispatch($result)->delay(10);//config("services.p2p.expired_time")
+                CancelExpiredP2pTransaction::dispatch($result)->delay(config("services.p2p.expired_time"));
             }
             return response(json_encode([
                 "success" => is_numeric($result),
