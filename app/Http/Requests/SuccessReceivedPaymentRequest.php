@@ -24,8 +24,6 @@ class SuccessReceivedPaymentRequest extends BaseRequest
     public function rules(): array
     {
         $useId = $this->user()->id;
-        $this->merge(["user_name", $this->user()->name]);
-        $this->merge(["user_id", $this->user()->id]);
         return [
             "id" => [
                 "required",

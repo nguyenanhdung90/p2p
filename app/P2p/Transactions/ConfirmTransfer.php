@@ -5,6 +5,7 @@ namespace App\P2p\Transactions;
 use App\Models\P2pAd;
 use App\Models\P2pTransaction as P2pTransactionModel;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -14,9 +15,10 @@ class ConfirmTransfer implements ConfirmTransferInterface
     {
         DB::beginTransaction();
         try {
+            $user = auth()->user();
             $tran = DB::table('p2p_transactions')
                 ->where("id", $data['id'])
-                ->where("partner_user_id", "!=", $data['user_id'])
+                ->where("partner_user_id", "!=", $user->id)
                 ->where("status", P2pTransactionModel::PARTNER_TRANSFER)
                 ->lockForUpdate()
                 ->first();
@@ -26,7 +28,7 @@ class ConfirmTransfer implements ConfirmTransferInterface
             }
             $ad = DB::table('p2p_ads')->where("id", $tran->p2p_ad_id)
                 ->where('is_active', false)
-                ->where('user_id', $data['user_id'])
+                ->where('user_id', $user->id)
                 ->first();
             if (!$ad) {
                 DB::rollBack();
@@ -34,7 +36,7 @@ class ConfirmTransfer implements ConfirmTransferInterface
             }
 
             $walletMerchant = DB::table('wallets')
-                ->where('user_name', $data['user_name'])
+                ->where('user_name', $user->name)
                 ->where('currency', $ad->coin_currency)
                 ->where('is_active', true)
                 ->lockForUpdate()
@@ -83,7 +85,8 @@ class ConfirmTransfer implements ConfirmTransferInterface
             DB::table('p2p_transactions')
                 ->where("id", $data['id'])
                 ->update([
-                    "status" => P2pTransactionModel::SUCCESS
+                    "status" => P2pTransactionModel::SUCCESS,
+                    "end_process" => Carbon::now()
                 ]);
             DB::commit();
             return true;

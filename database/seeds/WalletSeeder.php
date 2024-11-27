@@ -20,6 +20,7 @@ class WalletSeeder extends Seeder
             [
                 "amount" => 300000000000,
                 "p2p_amount" => 200000000000,
+                "locked_amount" => 10000000000,
             ]
         );
         Wallet::updateOrCreate(
@@ -30,6 +31,7 @@ class WalletSeeder extends Seeder
             [
                 "amount" => 600000000,
                 "p2p_amount" => 500000000,
+                "locked_amount" => 10000000,
             ]
         );
         Wallet::updateOrCreate(
@@ -40,6 +42,7 @@ class WalletSeeder extends Seeder
             [
                 "amount" => 300000000000,
                 "p2p_amount" => 200000000000,
+                "locked_amount" => 10000000000,
             ]
         );
         Wallet::updateOrCreate(
@@ -50,6 +53,7 @@ class WalletSeeder extends Seeder
             [
                 "amount" => 300000000000,
                 "p2p_amount" => 200000000000,
+                "locked_amount" => 10000000000,
             ]
         );
         Wallet::updateOrCreate(
@@ -60,6 +64,7 @@ class WalletSeeder extends Seeder
             [
                 "amount" => 50000000000,
                 "p2p_amount" => 40000000000,
+                "locked_amount" => 1000000000,
             ]
         );
         Wallet::updateOrCreate(
@@ -70,6 +75,7 @@ class WalletSeeder extends Seeder
             [
                 "amount" => 300000000000,
                 "p2p_amount" => 200000000000,
+                "locked_amount" => 10000000000,
             ]
         );
         Wallet::updateOrCreate(
@@ -80,6 +86,7 @@ class WalletSeeder extends Seeder
             [
                 "amount" => 600000000,
                 "p2p_amount" => 500000000,
+                "locked_amount" => 10000000,
             ]
         );
         Wallet::updateOrCreate(
@@ -90,6 +97,7 @@ class WalletSeeder extends Seeder
             [
                 "amount" => 300000000000,
                 "p2p_amount" => 200000000000,
+                "locked_amount" => 10000000000,
             ]
         );
         Wallet::updateOrCreate(
@@ -100,6 +108,7 @@ class WalletSeeder extends Seeder
             [
                 "amount" => 300000000000,
                 "p2p_amount" => 200000000000,
+                "locked_amount" => 10000000000,
             ]
         );
         Wallet::updateOrCreate(
@@ -110,6 +119,7 @@ class WalletSeeder extends Seeder
             [
                 "amount" => 50000000000,
                 "p2p_amount" => 40000000000,
+                "locked_amount" => 1000000000,
             ]
         );
     }
