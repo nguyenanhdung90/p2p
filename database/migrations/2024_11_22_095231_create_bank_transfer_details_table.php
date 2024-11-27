@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\BankTransferDetail;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -20,6 +21,8 @@ class CreateBankTransferDetailsTable extends Migration
             $table->string("bank_name", config("services.default_max_length_string"));
             $table->string("bank_account", config("services.default_max_length_string"));
             $table->boolean("is_active")->default(true);
+            $table->enum("status", [BankTransferDetail::PENDING, BankTransferDetail::APPROVED])
+                ->default(BankTransferDetail::PENDING);
             $table->boolean("is_default")->default(false);
             $table->foreign('user_id')
                 ->references('id')

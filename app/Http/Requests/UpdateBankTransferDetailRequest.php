@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\BankTransferDetail;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -46,7 +47,11 @@ class UpdateBankTransferDetailRequest extends FormRequest
             ],
             "is_default" => [
                 "boolean"
-            ]
+            ],
+            "status" => [
+                "string",
+                Rule::in([BankTransferDetail::PENDING, BankTransferDetail::APPROVED])
+            ],
         ];
     }
 }

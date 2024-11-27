@@ -35,6 +35,9 @@ class BankTransferDetail implements BankTransferDetailInterface
         if (isset($data['is_default'])) {
             $bankDetail->is_default = (bool)$data['is_default'];
         }
+        if (!empty($data['status'])) {
+            $bankDetail->status = $data['status'];
+        }
         $bankDetail->save();
         return true;
     }
