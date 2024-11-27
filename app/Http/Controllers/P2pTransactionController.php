@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\P2pCreateTransactionRequest;
 use App\Http\Requests\PartnerTransferStatusRequest;
 use App\Http\Requests\SuccessReceivedPaymentRequest;
+use App\Jobs\CancelExpiredP2pTransaction;
 use App\Models\P2pTransaction;
 use App\P2p\Transactions\ConfirmTransferInterface;
 use App\P2p\Transactions\InitiateTransactionInterface;
@@ -20,6 +21,9 @@ class P2pTransactionController extends Controller
     ) {
         try {
             $result = $initiateTransaction->process($request->all());
+            if (is_numeric($result)) {
+                CancelExpiredP2pTransaction::dispatch($result)->delay(10);//config("services.p2p.expired_time")
+            }
             return response(json_encode([
                 "success" => is_numeric($result),
                 "data" => $p2pTransaction->getTranById($result)
