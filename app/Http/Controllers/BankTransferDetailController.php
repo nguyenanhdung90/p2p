@@ -25,7 +25,7 @@ class BankTransferDetailController extends Controller
             ]), 200);
         } catch (\Exception $e) {
             Log::error("Exception createBankTransferDetail: " . $e->getMessage());
-            return response(json_encode(["success" => false, "message" => $e->getMessage()]), 200);
+            return response(json_encode(["success" => false, "message" => $e->getMessage()]), 500);
         }
     }
 
@@ -42,7 +42,7 @@ class BankTransferDetailController extends Controller
                 200);
         } catch (\Exception $e) {
             Log::error("Exception createBankTransferDetail: " . $e->getMessage());
-            return response(json_encode(["success" => false, "message" => $e->getMessage()]), 200);
+            return response(json_encode(["success" => false, "message" => $e->getMessage()]), 500);
         }
     }
 

@@ -6,6 +6,8 @@ use App\P2p\Ads\InitiateAd;
 use App\P2p\Ads\InitiateAdInterface;
 use App\P2p\Ads\P2pAd;
 use App\P2p\Ads\P2pAdInterface;
+use App\P2p\Appeal\InitiateAppeal;
+use App\P2p\Appeal\InitiateAppealInterface;
 use App\P2p\BankTransferDetails\BankTransferDetail;
 use App\P2p\BankTransferDetails\BankTransferDetailInterface;
 use App\P2p\PairCoinFiat\PairCoinFiat;
@@ -35,6 +37,7 @@ class AppServiceProvider extends ServiceProvider
             ConfirmTransferInterface::class => ConfirmTransfer::class,
             InitiateTransactionInterface::class => InitiateTransaction::class,
             InitiateAdInterface::class => InitiateAd::class,
+            InitiateAppealInterface::class => InitiateAppeal::class,
         ];
         foreach ($appServices as $key => $value) {
             $this->app->bind($key, $value);

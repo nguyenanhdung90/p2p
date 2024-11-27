@@ -5,7 +5,7 @@ use App\Http\Controllers\BankTransferDetailController;
 use App\Http\Controllers\P2pAdController;
 use App\Http\Controllers\P2pTransactionController;
 use App\Http\Controllers\PairCoinFiatController;
-use App\Http\Controllers\ReasonDetailController;
+use App\Http\Controllers\AppealController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,7 +41,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/updateBankTransferDetail', [BankTransferDetailController::class, 'update']);
     Route::get('/getOwnTransferDetail', [BankTransferDetailController::class, 'getOwn']);
 
-    Route::get('/createReasonDetail', [ReasonDetailController::class, 'create']);
+    Route::post('/createAppeal', [AppealController::class, 'create']);
 });
 
 Route::post('/login', [AuthController::class, 'login']);

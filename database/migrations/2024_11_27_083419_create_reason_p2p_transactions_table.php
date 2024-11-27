@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\ReasonP2pTransaction;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,7 +19,9 @@ class CreateReasonP2pTransactionsTable extends Migration
             $table->unsignedBigInteger("reason_id");
             $table->unsignedBigInteger("p2p_transaction_id");
             $table->unsignedBigInteger("by_user_id");
-            $table->enum("status", ["PENDING", "FAILED", "SUCCESS", "RESOLVED"]);
+            $table->enum("status", [ReasonP2pTransaction::PENDING, ReasonP2pTransaction::FAILED,
+                ReasonP2pTransaction::SUCCESS, ReasonP2pTransaction::RESOLVED])
+                ->default(ReasonP2pTransaction::PENDING);
 
             $table->foreign('reason_id', 'reasons')
                 ->references('id')
