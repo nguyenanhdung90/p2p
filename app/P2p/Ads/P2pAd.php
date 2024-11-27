@@ -25,6 +25,6 @@ class P2pAd implements P2pAdInterface
         if (!$ad) {
             return [];
         }
-        return $ad->toArray();
+        return $ad->makeHidden(["user_id", "id"])->toArray();
     }
 }

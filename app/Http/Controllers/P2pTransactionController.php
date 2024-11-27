@@ -43,7 +43,8 @@ class P2pTransactionController extends Controller
             $updatedTransaction = $p2pTransaction->update($request->get("id"), $params);
             return response(json_encode([
                 "success" => $updatedTransaction instanceof Model,
-                "data" => $updatedTransaction instanceof Model ? $updatedTransaction->toArray() : []
+                "data" => $updatedTransaction instanceof Model ?
+                    $updatedTransaction->makeHidden(["partner_user_id", "id", "p2p_ad_id"])->toArray() : []
             ]));
         } catch (\Exception $e) {
             return response(json_encode([

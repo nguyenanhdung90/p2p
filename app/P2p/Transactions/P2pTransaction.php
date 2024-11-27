@@ -27,6 +27,6 @@ class P2pTransaction implements P2pTransactionInterface
         if (!$tran) {
             return [];
         }
-        return $tran->toArray();
+        return $tran->makeHidden(["partner_user_id", "id", "p2p_ad_id"])->toArray();
     }
 }
