@@ -14,7 +14,7 @@ class P2pAd implements P2pAdInterface
         DB::beginTransaction();
         try {
             $wallet = DB::table('wallets')
-                ->where("user_name", $data['user_name'])
+                ->where("user_name", auth()->user()->name)
                 ->where("currency", $data['coin_currency'])
                 ->where("is_active", true)
                 ->lockForUpdate()

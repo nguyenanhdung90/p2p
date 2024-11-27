@@ -6,16 +6,25 @@ use App\Http\Requests\P2pCreateTransactionRequest;
 use App\Http\Requests\PartnerTransferStatusRequest;
 use App\Http\Requests\SuccessReceivedPaymentRequest;
 use App\Models\P2pTransaction;
+use App\P2p\Transactions\ConfirmTransferInterface;
+use App\P2p\Transactions\InitiateTransactionInterface;
 use App\P2p\Transactions\P2pTransactionInterface;
 use Illuminate\Database\Eloquent\Model;
 
 class P2pTransactionController extends Controller
 {
-    public function create(P2pCreateTransactionRequest $request, P2pTransactionInterface $p2pTransaction)
-    {
+    public function create(
+        P2pCreateTransactionRequest $request,
+        InitiateTransactionInterface $initiateTransaction,
+        P2pTransactionInterface $p2pTransaction
+    ) {
         try {
-            $params = $request->all();
-            return response(json_encode(["success" => $p2pTransaction->initiateTransaction($params)]), 200);
+            $result = $initiateTransaction->process($request->all());
+            $tran = $p2pTransaction->findBy($result);
+            return response(json_encode([
+                "success" => is_numeric($result),
+                "data" => $tran instanceof Model ? $tran->toArray() : []
+            ]));
         } catch (\Exception $e) {
             return response(json_encode([
                 'success' => false,
@@ -38,11 +47,11 @@ class P2pTransactionController extends Controller
         }
     }
 
-    public function successTransfer(SuccessReceivedPaymentRequest $request, P2pTransactionInterface $p2pTransaction)
+    public function successTransfer(SuccessReceivedPaymentRequest $request, ConfirmTransferInterface $confirmTransfer)
     {
         try {
             $data = $request->all();
-            return response(json_encode(["success" => $p2pTransaction->successTransfer($data)]), 200);
+            return response(json_encode(["success" => $confirmTransfer->process($data)]), 200);
         } catch (\Exception $e) {
             return response(json_encode([
                 'success' => false,

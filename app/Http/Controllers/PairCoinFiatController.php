@@ -6,7 +6,6 @@ use App\Http\Requests\DeleteCoinFiatRequest;
 use App\Http\Requests\MaxFiatPriceRequest;
 use App\Http\Requests\UpdatePairCoinFiatRequest;
 use App\P2p\PairCoinFiat\PairCoinFiatInterface;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class PairCoinFiatController extends Controller

@@ -22,9 +22,7 @@ class P2pCreateTransactionRequest extends BaseRequest
     public function rules(): array
     {
         $userId = $this->user()->id;
-        $name = $this->user()->name;
         $this->merge(["partner_user_id" => $userId]);
-        $this->merge(["user_name" => $name]);
         $this->merge(["reference" => P2pHelper::generateRandomString()]);
         $this->merge(["expired_process" => config("services.p2p.expired_time")]);
         $this->merge(["start_process" => Carbon::now()]);

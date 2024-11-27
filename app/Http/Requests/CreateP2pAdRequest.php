@@ -32,7 +32,6 @@ class CreateP2pAdRequest extends BaseRequest
         $userid = $this->user()->id;
         $userName = $this->user()->name;
         $this->merge(['user_id' => $userid]);
-        $this->merge(['user_name' => $userName]);
         $this->merge(['is_active' => true]);
         $this->merge(['created_at' => Carbon::now()]);
         $this->merge(['updated_at' => Carbon::now()]);
