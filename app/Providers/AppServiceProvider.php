@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\P2p\Ads\InitiateAd;
+use App\P2p\Ads\InitiateAdInterface;
 use App\P2p\Ads\P2pAd;
 use App\P2p\Ads\P2pAdInterface;
 use App\P2p\BankTransferDetails\BankTransferDetail;
@@ -32,6 +34,7 @@ class AppServiceProvider extends ServiceProvider
             P2pTransactionInterface::class => P2pTransaction::class,
             ConfirmTransferInterface::class => ConfirmTransfer::class,
             InitiateTransactionInterface::class => InitiateTransaction::class,
+            InitiateAdInterface::class => InitiateAd::class,
         ];
         foreach ($appServices as $key => $value) {
             $this->app->bind($key, $value);
