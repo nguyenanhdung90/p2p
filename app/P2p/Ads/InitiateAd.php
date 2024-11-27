@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
 
 class InitiateAd implements InitiateAdInterface
 {
-    public function proccess(array $data)
+    public function process(array $data)
     {
         DB::beginTransaction();
         try {

@@ -18,7 +18,6 @@ class ConfirmTransfer implements ConfirmTransferInterface
             $user = auth()->user();
             $tran = DB::table('p2p_transactions')
                 ->where("id", $data['id'])
-                ->where("partner_user_id", "!=", $user->id)
                 ->where("status", P2pTransactionModel::PARTNER_TRANSFER)
                 ->lockForUpdate()
                 ->first();
@@ -28,7 +27,6 @@ class ConfirmTransfer implements ConfirmTransferInterface
             }
             $ad = DB::table('p2p_ads')->where("id", $tran->p2p_ad_id)
                 ->where('is_active', false)
-                ->where('user_id', $user->id)
                 ->first();
             if (!$ad) {
                 DB::rollBack();

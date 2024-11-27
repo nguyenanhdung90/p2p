@@ -2,6 +2,7 @@
 
 namespace App\Rules;
 
+use App\Models\P2pAd;
 use App\Models\P2pTransaction;
 use Carbon\Carbon;
 use Illuminate\Contracts\Validation\Rule;
@@ -10,7 +11,7 @@ class P2pPartnerTransferTransactionRule implements Rule
 {
     private int $userId;
 
-    private string $message = "";
+    private string $message = "Invalid transfer transaction";
 
     /**
      * Create a new rule instance.
@@ -32,17 +33,37 @@ class P2pPartnerTransferTransactionRule implements Rule
     public function passes($attribute, $value): bool
     {
         $transaction = P2pTransaction::where("id", $value)
-            ->where("partner_user_id", "=", $this->userId)
             ->where("status", P2pTransaction::INITIATE)
             ->whereHas("p2pAd", function ($q) {
-                $q->where("user_id", "!=", $this->userId);
                 $q->where("is_active", false);
             }, "=", 1)
+            ->with("p2pAd")
             ->first();
         if (!$transaction) {
-            $this->message = "Transaction is invalid.";
+            $this->message = "Transaction does not exist.";
             return false;
         }
+        $ad = $transaction->p2pAd;
+        if ($ad->type === P2pAd::SELL) {
+            if ($this->userId != $transaction->partner_user_id) {
+                $this->message = "Invalid buyer.";
+                return false;
+            }
+            if ($this->userId == $ad->user_id) {
+                $this->message = "Invalid seller.";
+                return false;
+            }
+        } else {
+            if ($this->userId == $transaction->partner_user_id) {
+                $this->message = "Invalid seller.";
+                return false;
+            }
+            if ($this->userId != $ad->user_id) {
+                $this->message = "Invalid buyer.";
+                return false;
+            }
+        }
+
         $startTime = Carbon::createFromFormat('Y-m-d H:i:s', $transaction->start_process);
         $diff = Carbon::now()->diffInSeconds($startTime);
         if ($diff > $transaction->expired_process) {
@@ -59,6 +80,6 @@ class P2pPartnerTransferTransactionRule implements Rule
      */
     public function message(): string
     {
-        return empty($this->message) ? 'Invalid transaction' : $this->message;
+        return $this->message;
     }
 }

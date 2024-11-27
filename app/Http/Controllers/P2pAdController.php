@@ -14,7 +14,7 @@ class P2pAdController extends Controller
         P2pAdInterface $p2pAd
     ) {
         try {
-            $result = $initiateAd->proccess($request->all());
+            $result = $initiateAd->process($request->all());
             return response(json_encode([
                 "success" => is_numeric($result),
                 "data" => $p2pAd->getAdById((int)$result)
