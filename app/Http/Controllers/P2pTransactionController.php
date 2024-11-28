@@ -12,7 +12,7 @@ use App\Models\P2pTransaction;
 use App\P2p\Transactions\ConfirmTransferInterface;
 use App\P2p\Transactions\InitiateTransactionInterface;
 use App\P2p\Transactions\P2pTransactionInterface;
-use Illuminate\Database\Eloquent\Model;
+use App\P2p\Transactions\UpdateP2pTransactionInterface;
 
 class P2pTransactionController extends Controller
 {
@@ -39,18 +39,20 @@ class P2pTransactionController extends Controller
         }
     }
 
-    public function partnerTransfer(PartnerTransferStatusRequest $request, P2pTransactionInterface $p2pTransaction)
-    {
+    public function partnerTransfer(
+        PartnerTransferStatusRequest $request,
+        P2pTransactionInterface $p2pTransaction,
+        UpdateP2pTransactionInterface $updateP2pTransaction
+    ) {
         try {
             $params['status'] = P2pTransaction::PARTNER_TRANSFER;
-            $updatedTransaction = $p2pTransaction->update($request->get("id"), $params);
-            if ($isSuccess = $updatedTransaction instanceof Model) {
+            $isSuccess = $updateP2pTransaction->process($request->get("id"), $params);
+            if ($isSuccess) {
                 SendNotifyMail::dispatch(auth()->user()->email, new SendMail());
             }
             return response(json_encode([
                 "success" => $isSuccess,
-                "data" => $isSuccess ?
-                    $updatedTransaction->makeHidden(["partner_user_id", "id", "p2p_ad_id"])->toArray() : []
+                "data" => $p2pTransaction->getTranById($request->get("id"))
             ]));
         } catch (\Exception $e) {
             return response(json_encode([

@@ -32,6 +32,8 @@ use App\P2p\Transactions\InitiateTransaction;
 use App\P2p\Transactions\InitiateTransactionInterface;
 use App\P2p\Transactions\P2pTransactionInterface;
 use App\P2p\Transactions\P2pTransaction;
+use App\P2p\Transactions\UpdateP2pTransaction;
+use App\P2p\Transactions\UpdateP2pTransactionInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -59,6 +61,7 @@ class AppServiceProvider extends ServiceProvider
             DeletePairCoinFiatInterface::class => DeletePairCoinFiat::class,
             AddBankTransferDetailInterface::class => AddBankTransferDetail::class,
             UpdateBankTransferDetailInterface::class => UpdateBankTransferDetail::class,
+            UpdateP2pTransactionInterface::class => UpdateP2pTransaction::class,
         ];
         foreach ($appServices as $key => $value) {
             $this->app->bind($key, $value);
