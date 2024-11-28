@@ -6,6 +6,8 @@ use App\P2p\Ads\InitiateAd;
 use App\P2p\Ads\InitiateAdInterface;
 use App\P2p\Ads\P2pAd;
 use App\P2p\Ads\P2pAdInterface;
+use App\P2p\Appeal\AddProof;
+use App\P2p\Appeal\AddProofInterface;
 use App\P2p\Appeal\Appeal;
 use App\P2p\Appeal\AppealInterface;
 use App\P2p\Appeal\InitiateAppeal;
@@ -41,6 +43,7 @@ class AppServiceProvider extends ServiceProvider
             InitiateAdInterface::class => InitiateAd::class,
             InitiateAppealInterface::class => InitiateAppeal::class,
             AppealInterface::class => Appeal::class,
+            AddProofInterface::class => AddProof::class,
         ];
         foreach ($appServices as $key => $value) {
             $this->app->bind($key, $value);

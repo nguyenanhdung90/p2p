@@ -8,7 +8,7 @@ class Appeal implements AppealInterface
 {
     public function getById(int $id)
     {
-        $data = ReasonP2pTransaction::where("id", $id)->with("reason_p2p_transaction_details")->first();
+        $data = ReasonP2pTransaction::where("id", $id)->with("reasonP2pTransactionDetails")->first();
         if (!$data) {
             return [];
         }

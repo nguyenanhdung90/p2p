@@ -42,6 +42,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/getOwnTransferDetail', [BankTransferDetailController::class, 'getOwn']);
 
     Route::post('/createAppeal', [AppealController::class, 'create']);
+    Route::post('/addProof', [AppealController::class, 'addProof']);
 });
 
 Route::post('/login', [AuthController::class, 'login']);
