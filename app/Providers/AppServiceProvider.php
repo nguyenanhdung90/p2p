@@ -12,8 +12,18 @@ use App\P2p\Appeal\Appeal;
 use App\P2p\Appeal\AppealInterface;
 use App\P2p\Appeal\InitiateAppeal;
 use App\P2p\Appeal\InitiateAppealInterface;
+use App\P2p\Appeal\UpdateStatus;
+use App\P2p\Appeal\UpdateStatusInterface;
+use App\P2p\BankTransferDetails\AddBankTransferDetail;
+use App\P2p\BankTransferDetails\AddBankTransferDetailInterface;
 use App\P2p\BankTransferDetails\BankTransferDetail;
 use App\P2p\BankTransferDetails\BankTransferDetailInterface;
+use App\P2p\BankTransferDetails\UpdateBankTransferDetail;
+use App\P2p\BankTransferDetails\UpdateBankTransferDetailInterface;
+use App\P2p\PairCoinFiat\AddPairCoinFiat;
+use App\P2p\PairCoinFiat\AddPairCoinFiatInterface;
+use App\P2p\PairCoinFiat\DeletePairCoinFiat;
+use App\P2p\PairCoinFiat\DeletePairCoinFiatInterface;
 use App\P2p\PairCoinFiat\PairCoinFiat;
 use App\P2p\PairCoinFiat\PairCoinFiatInterface;
 use App\P2p\Transactions\ConfirmTransfer;
@@ -44,6 +54,11 @@ class AppServiceProvider extends ServiceProvider
             InitiateAppealInterface::class => InitiateAppeal::class,
             AppealInterface::class => Appeal::class,
             AddProofInterface::class => AddProof::class,
+            UpdateStatusInterface::class => UpdateStatus::class,
+            AddPairCoinFiatInterface::class => AddPairCoinFiat::class,
+            DeletePairCoinFiatInterface::class => DeletePairCoinFiat::class,
+            AddBankTransferDetailInterface::class => AddBankTransferDetail::class,
+            UpdateBankTransferDetailInterface::class => UpdateBankTransferDetail::class,
         ];
         foreach ($appServices as $key => $value) {
             $this->app->bind($key, $value);

@@ -5,12 +5,17 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DeleteCoinFiatRequest;
 use App\Http\Requests\MaxFiatPriceRequest;
 use App\Http\Requests\UpdatePairCoinFiatRequest;
+use App\P2p\PairCoinFiat\AddPairCoinFiatInterface;
+use App\P2p\PairCoinFiat\DeletePairCoinFiatInterface;
 use App\P2p\PairCoinFiat\PairCoinFiatInterface;
 use Illuminate\Http\Request;
 
 class PairCoinFiatController extends Controller
 {
-    public function update(UpdatePairCoinFiatRequest $request, PairCoinFiatInterface $pairCoinFiat)
+    public function update(
+        UpdatePairCoinFiatRequest $request,
+        PairCoinFiatInterface $pairCoinFiat,
+        AddPairCoinFiatInterface $addPairCoinFiat)
     {
         try {
             $coin = $request->get('coin');
@@ -18,7 +23,7 @@ class PairCoinFiatController extends Controller
             $maxFiatPrice = $request->get('max_fiat_price');
             $minAmountCoin = $request->get('min_amount_coin');
             return response(json_encode([
-                "success" => $pairCoinFiat->updatePairCoinFiat($coin, $fiat, $maxFiatPrice, $minAmountCoin),
+                "success" => $addPairCoinFiat->process($coin, $fiat, $maxFiatPrice, $minAmountCoin),
                 "data" => $pairCoinFiat->getCoinFiatPivotBy($coin, $fiat)
             ]), 200);
         } catch (\Exception $e) {
@@ -29,12 +34,14 @@ class PairCoinFiatController extends Controller
         }
     }
 
-    public function delete(DeleteCoinFiatRequest $request, PairCoinFiatInterface $pairCoinFiat)
-    {
+    public function delete(
+        DeleteCoinFiatRequest $request,
+        DeletePairCoinFiatInterface $deletePairCoinFiat
+    ) {
         try {
             $coin = $request->get('coin');
             $fiat = $request->get('fiat');
-            return response(json_encode(['success' => $pairCoinFiat->deletePairCoinFiat($coin, $fiat)]));
+            return response(json_encode(['success' => $deletePairCoinFiat->process($coin, $fiat)]));
         } catch (\Exception $e) {
             return response([
                 'success' => false,

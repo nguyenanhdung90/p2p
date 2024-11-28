@@ -43,6 +43,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::post('/createAppeal', [AppealController::class, 'create']);
     Route::post('/addProof', [AppealController::class, 'addProof']);
+    Route::post('/resolveAppeal', [AppealController::class, 'resolveAppeal']);
 });
 
 Route::post('/login', [AuthController::class, 'login']);

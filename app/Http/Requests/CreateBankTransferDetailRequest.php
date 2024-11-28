@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 
 class CreateBankTransferDetailRequest extends BaseRequest
@@ -11,7 +12,7 @@ class CreateBankTransferDetailRequest extends BaseRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -23,6 +24,9 @@ class CreateBankTransferDetailRequest extends BaseRequest
      */
     public function rules(): array
     {
+        $this->merge(["user_id" => $this->user()->id]);
+        $this->merge(["created_at" => Carbon::now()]);
+        $this->merge(["updated_at" => Carbon::now()]);
         return [
             "account_name" => [
                 "required",

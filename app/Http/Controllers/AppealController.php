@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AddProofRequest;
 use App\Http\Requests\CreateAppealRequest;
+use App\Http\Requests\ResolveAppealRequest;
+use App\Models\ReasonP2pTransaction;
 use App\P2p\Appeal\AddProofInterface;
 use App\P2p\Appeal\AppealInterface;
 use App\P2p\Appeal\InitiateAppealInterface;
+use App\P2p\Appeal\UpdateStatusInterface;
 use Illuminate\Support\Facades\Log;
 
 class AppealController extends Controller
@@ -42,5 +45,16 @@ class AppealController extends Controller
             Log::error("Exception addProof: " . $e->getMessage());
             return response(json_encode(["success" => false, "message" => $e->getMessage()]), 500);
         }
+    }
+
+    public function resolveAppeal(
+        AppealInterface $appeal,
+        UpdateStatusInterface $updateStatus,
+        ResolveAppealRequest $request
+    ) {
+        return response(json_encode([
+            "success" => $updateStatus->process(5, ReasonP2pTransaction::RESOLVED) > 0,
+            "data" => $appeal->getById($request->get("reason_p2p_transaction_id"))
+        ]));
     }
 }
