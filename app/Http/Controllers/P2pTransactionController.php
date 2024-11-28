@@ -6,6 +6,8 @@ use App\Http\Requests\P2pCreateTransactionRequest;
 use App\Http\Requests\PartnerTransferStatusRequest;
 use App\Http\Requests\SuccessReceivedPaymentRequest;
 use App\Jobs\CancelExpiredP2pTransaction;
+use App\Jobs\SendNotifyMail;
+use App\Mail\SendMail;
 use App\Models\P2pTransaction;
 use App\P2p\Transactions\ConfirmTransferInterface;
 use App\P2p\Transactions\InitiateTransactionInterface;
@@ -23,6 +25,7 @@ class P2pTransactionController extends Controller
             $result = $initiateTransaction->process($request->all());
             if (is_numeric($result)) {
                 CancelExpiredP2pTransaction::dispatch($result)->delay(config("services.p2p.expired_time"));
+                SendNotifyMail::dispatch(auth()->user()->email, new SendMail());
             }
             return response(json_encode([
                 "success" => is_numeric($result),
@@ -41,9 +44,12 @@ class P2pTransactionController extends Controller
         try {
             $params['status'] = P2pTransaction::PARTNER_TRANSFER;
             $updatedTransaction = $p2pTransaction->update($request->get("id"), $params);
+            if ($isSuccess = $updatedTransaction instanceof Model) {
+                SendNotifyMail::dispatch(auth()->user()->email, new SendMail());
+            }
             return response(json_encode([
-                "success" => $updatedTransaction instanceof Model,
-                "data" => $updatedTransaction instanceof Model ?
+                "success" => $isSuccess,
+                "data" => $isSuccess ?
                     $updatedTransaction->makeHidden(["partner_user_id", "id", "p2p_ad_id"])->toArray() : []
             ]));
         } catch (\Exception $e) {
@@ -60,8 +66,11 @@ class P2pTransactionController extends Controller
         P2pTransactionInterface $p2pTransaction
     ) {
         try {
+            if ($isSuccess = $confirmTransfer->process($request->all())) {
+                SendNotifyMail::dispatch(auth()->user()->email, new SendMail());
+            }
             return response(json_encode([
-                "success" => $confirmTransfer->process($request->all()),
+                "success" => $isSuccess,
                 "data" => $p2pTransaction->getTranById($request->get("id"))
 
             ]));

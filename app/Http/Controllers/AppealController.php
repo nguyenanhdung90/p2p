@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AddProofRequest;
 use App\Http\Requests\CreateAppealRequest;
 use App\Http\Requests\ResolveAppealRequest;
+use App\Jobs\SendNotifyMail;
+use App\Mail\SendMail;
 use App\Models\ReasonP2pTransaction;
 use App\P2p\Appeal\AddProofInterface;
 use App\P2p\Appeal\AppealInterface;
@@ -26,6 +28,9 @@ class AppealController extends Controller
             Storage::disk('public')->put("appeal_proof/" . $fileName, file_get_contents($file));
             $params = $request->except(['attachment']);
             $result = $initiateAppeal->process($params);
+            if (is_numeric($result)) {
+                SendNotifyMail::dispatch(auth()->user()->email, new SendMail());
+            }
             return response(json_encode([
                 "success" => is_numeric($result),
                 "data" => $appeal->getById((int)$result)
@@ -46,8 +51,11 @@ class AppealController extends Controller
             $fileName = $file->getClientOriginalName();
             Storage::disk('public')->put("appeal_proof/" . $fileName, file_get_contents($file));
             $params = $request->except(['attachment']);
+            if ($isSuccess = $addProof->process($params)) {
+                SendNotifyMail::dispatch(auth()->user()->email, new SendMail());
+            }
             return response(json_encode([
-                "success" => $addProof->process($params),
+                "success" => $isSuccess,
                 "data" => $appeal->getById($request->get("reason_p2p_transactions_id"))
             ]));
         } catch (\Exception $e) {
@@ -61,8 +69,12 @@ class AppealController extends Controller
         UpdateStatusInterface $updateStatus,
         ResolveAppealRequest $request
     ) {
+        $result = $updateStatus->process($request->get('reason_p2p_transaction_id'), ReasonP2pTransaction::RESOLVED);
+        if ($result > 0) {
+            SendNotifyMail::dispatch(auth()->user()->email, new SendMail());
+        }
         return response(json_encode([
-            "success" => $updateStatus->process($request->get('reason_p2p_transaction_id'), ReasonP2pTransaction::RESOLVED) > 0,
+            "success" => $result > 0,
             "data" => $appeal->getById($request->get("reason_p2p_transaction_id"))
         ]));
     }
