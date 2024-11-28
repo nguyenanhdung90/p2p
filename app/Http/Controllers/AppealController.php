@@ -70,11 +70,11 @@ class AppealController extends Controller
         ResolveAppealRequest $request
     ) {
         $result = $updateStatus->process($request->get('reason_p2p_transaction_id'), ReasonP2pTransaction::RESOLVED);
-        if ($result > 0) {
+        if ($result) {
             SendNotifyMail::dispatch(auth()->user()->email, new SendMail());
         }
         return response(json_encode([
-            "success" => $result > 0,
+            "success" => $result,
             "data" => $appeal->getById($request->get("reason_p2p_transaction_id"))
         ]));
     }

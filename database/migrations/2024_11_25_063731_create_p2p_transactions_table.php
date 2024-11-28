@@ -26,7 +26,7 @@ class CreateP2pTransactionsTable extends Migration
             $table->enum("status", [P2pTransaction::INITIATE, P2pTransaction::PARTNER_TRANSFER,
                 P2pTransaction::SUCCESS, P2pTransaction::CANCEL])
                 ->default(P2pTransaction::INITIATE);
-            $table->enum("appeal_status", [P2pTransaction::APPEAL_PENDING, P2pTransaction::APPEAL_APPROVED])
+            $table->enum("appeal_status", [P2pTransaction::APPEAL_PENDING, P2pTransaction::APPEAL_COMPLETE])
                 ->nullable();
 
             $table->foreign('p2p_ad_id')

@@ -14,11 +14,10 @@ class P2pTransaction extends Model
     const SUCCESS = "SUCCESS";
     const CANCEL = "CANCEL";
     const APPEAL_PENDING = "PENDING";
-    const APPEAL_APPROVED = "APPROVED";
-    const APPEAL_RESOLVE = "CANCEL";
+    const APPEAL_COMPLETE = "COMPLETE";
 
     protected $fillable = ['p2p_ad_id', 'partner_user_id', 'coin_amount', 'start_process', 'end_process', 'status',
-        'expired_process', 'reference'];
+        'expired_process', 'reference', 'appeal_status'];
 
     public function p2pAd(): HasOne
     {
