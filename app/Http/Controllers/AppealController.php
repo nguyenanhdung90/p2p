@@ -11,6 +11,7 @@ use App\P2p\Appeal\AppealInterface;
 use App\P2p\Appeal\InitiateAppealInterface;
 use App\P2p\Appeal\UpdateStatusInterface;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class AppealController extends Controller
 {
@@ -20,7 +21,11 @@ class AppealController extends Controller
         AppealInterface $appeal
     ) {
         try {
-            $result = $initiateAppeal->process($request->all());
+            $file = $request->file('attachment');
+            $fileName = $file->getClientOriginalName();
+            Storage::disk('public')->put("appeal_proof/" . $fileName, file_get_contents($file));
+            $params = $request->except(['attachment']);
+            $result = $initiateAppeal->process($params);
             return response(json_encode([
                 "success" => is_numeric($result),
                 "data" => $appeal->getById((int)$result)
@@ -37,8 +42,12 @@ class AppealController extends Controller
         AppealInterface $appeal
     ) {
         try {
+            $file = $request->file('attachment');
+            $fileName = $file->getClientOriginalName();
+            Storage::disk('public')->put("appeal_proof/" . $fileName, file_get_contents($file));
+            $params = $request->except(['attachment']);
             return response(json_encode([
-                "success" => $addProof->process($request->all()),
+                "success" => $addProof->process($params),
                 "data" => $appeal->getById($request->get("reason_p2p_transactions_id"))
             ]));
         } catch (\Exception $e) {
@@ -53,7 +62,7 @@ class AppealController extends Controller
         ResolveAppealRequest $request
     ) {
         return response(json_encode([
-            "success" => $updateStatus->process(5, ReasonP2pTransaction::RESOLVED) > 0,
+            "success" => $updateStatus->process($request->get('reason_p2p_transaction_id'), ReasonP2pTransaction::RESOLVED) > 0,
             "data" => $appeal->getById($request->get("reason_p2p_transaction_id"))
         ]));
     }

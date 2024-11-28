@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Models\ReasonP2pTransaction;
+use App\Rules\ImageAppealProofRule;
 use App\Rules\ValidAppealTransactionRule;
 use App\Rules\ValidAppealUniquePendingRule;
 use Carbon\Carbon;
@@ -46,8 +46,9 @@ class CreateAppealRequest extends BaseRequest
                 "string",
                 "max:1000",
             ],
-            "img" => [
-                "required"
+            "attachment" => [
+                "required",
+                new ImageAppealProofRule($this->file("attachment"))
             ]
         ];
     }

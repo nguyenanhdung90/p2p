@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ImageAppealProofRule;
 use App\Rules\ValidAddProofRule;
 use Carbon\Carbon;
 
@@ -36,8 +37,9 @@ class AddProofRequest extends BaseRequest
             "description" => [
                 "required"
             ],
-            "img" => [
-                "required"
+            "attachment" => [
+                "required",
+                new ImageAppealProofRule($this->file("attachment"))
             ]
         ];
     }

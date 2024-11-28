@@ -87,5 +87,8 @@ return [
     "default_max_length_string" => 191,
     "p2p" => [
         "expired_time" => 900
+    ],
+    "valid_image_extensions" => [
+        'png', 'jpg', 'jpeg', 'gif'
     ]
 ];
