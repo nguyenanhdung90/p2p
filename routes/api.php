@@ -6,6 +6,7 @@ use App\Http\Controllers\P2pAdController;
 use App\Http\Controllers\P2pTransactionController;
 use App\Http\Controllers\PairCoinFiatController;
 use App\Http\Controllers\AppealController;
+use App\Http\Controllers\PusherController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -44,6 +45,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/createAppeal', [AppealController::class, 'create']);
     Route::post('/addProof', [AppealController::class, 'addProof']);
     Route::post('/resolveAppeal', [AppealController::class, 'resolveAppeal']);
+
+    Route::post('/auth', [PusherController::class, 'auth']);
 });
 
 Route::post('/login', [AuthController::class, 'login']);

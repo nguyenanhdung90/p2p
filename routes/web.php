@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PusherController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,4 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/getPusher', [PusherController::class, 'getPusher']);
+Route::get('/getEchoPusher', [PusherController::class, 'getEchoPusher']);
+Route::get('/pusher', [PusherController::class, 'pusher']);
+
 

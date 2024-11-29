@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NotifyEvent;
 use App\Http\Requests\P2pCreateTransactionRequest;
 use App\Http\Requests\PartnerTransferStatusRequest;
 use App\Http\Requests\SuccessReceivedPaymentRequest;
 use App\Jobs\CancelExpiredP2pTransaction;
-use App\Jobs\SendNotifyMail;
-use App\Mail\SendMail;
 use App\Models\P2pTransaction;
+use App\Notifications\BroadcastNotifyPusher;
+use App\Notifications\UserMailNotify;
 use App\P2p\Transactions\ConfirmTransferInterface;
 use App\P2p\Transactions\InitiateTransactionInterface;
 use App\P2p\Transactions\P2pTransactionInterface;
@@ -25,7 +26,11 @@ class P2pTransactionController extends Controller
             $result = $initiateTransaction->process($request->all());
             if (is_numeric($result)) {
                 CancelExpiredP2pTransaction::dispatch($result)->delay(config("services.p2p.expired_time"));
-                SendNotifyMail::dispatch(auth()->user()->email, new SendMail());
+                $user = auth()->user();
+                $user->notify(new UserMailNotify());
+                $message = "message of notify";
+                broadcast((new NotifyEvent("message notify", "user-" . $user->name)))->toOthers();
+                $user->notify(new BroadcastNotifyPusher(["data" => $message]));
             }
             return response(json_encode([
                 "success" => is_numeric($result),
@@ -48,7 +53,11 @@ class P2pTransactionController extends Controller
             $params['status'] = P2pTransaction::PARTNER_TRANSFER;
             $isSuccess = $updateP2pTransaction->process($request->get("id"), $params);
             if ($isSuccess) {
-                SendNotifyMail::dispatch(auth()->user()->email, new SendMail());
+                $user = auth()->user();
+                $user->notify(new UserMailNotify());
+                $message = "message notify";
+                broadcast((new NotifyEvent("message notify", "user-" . $user->name)))->toOthers();
+                $user->notify(new BroadcastNotifyPusher(["data" => $message]));
             }
             return response(json_encode([
                 "success" => $isSuccess,
@@ -69,7 +78,11 @@ class P2pTransactionController extends Controller
     ) {
         try {
             if ($isSuccess = $confirmTransfer->process($request->all())) {
-                SendNotifyMail::dispatch(auth()->user()->email, new SendMail());
+                $user = auth()->user();
+                $user->notify(new UserMailNotify());
+                $message = "message notify";
+                broadcast((new NotifyEvent("message notify", "user-" . $user->name)))->toOthers();
+                $user->notify(new BroadcastNotifyPusher(["data" => $message]));
             }
             return response(json_encode([
                 "success" => $isSuccess,

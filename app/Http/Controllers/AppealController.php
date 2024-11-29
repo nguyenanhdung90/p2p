@@ -5,9 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AddProofRequest;
 use App\Http\Requests\CreateAppealRequest;
 use App\Http\Requests\ResolveAppealRequest;
-use App\Jobs\SendNotifyMail;
-use App\Mail\SendMail;
 use App\Models\ReasonP2pTransaction;
+use App\Notifications\UserMailNotify;
 use App\P2p\Appeal\AddProofInterface;
 use App\P2p\Appeal\AppealInterface;
 use App\P2p\Appeal\InitiateAppealInterface;
@@ -29,7 +28,8 @@ class AppealController extends Controller
             $params = $request->except(['attachment']);
             $result = $initiateAppeal->process($params);
             if (is_numeric($result)) {
-                SendNotifyMail::dispatch(auth()->user()->email, new SendMail());
+                $user = auth()->user();
+                $user->notify(new UserMailNotify());
             }
             return response(json_encode([
                 "success" => is_numeric($result),
@@ -52,7 +52,8 @@ class AppealController extends Controller
             Storage::disk('public')->put("appeal_proof/" . $fileName, file_get_contents($file));
             $params = $request->except(['attachment']);
             if ($isSuccess = $addProof->process($params)) {
-                SendNotifyMail::dispatch(auth()->user()->email, new SendMail());
+                $user = auth()->user();
+                $user->notify(new UserMailNotify());
             }
             return response(json_encode([
                 "success" => $isSuccess,
@@ -71,7 +72,8 @@ class AppealController extends Controller
     ) {
         $result = $updateStatus->process($request->get('reason_p2p_transaction_id'), ReasonP2pTransaction::RESOLVED);
         if ($result) {
-            SendNotifyMail::dispatch(auth()->user()->email, new SendMail());
+            $user = auth()->user();
+            $user->notify(new UserMailNotify());
         }
         return response(json_encode([
             "success" => $result,
