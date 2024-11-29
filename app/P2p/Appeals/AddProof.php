@@ -1,6 +1,6 @@
 <?php
 
-namespace App\P2p\Appeal;
+namespace App\P2p\Appeals;
 
 use Illuminate\Support\Facades\DB;
 

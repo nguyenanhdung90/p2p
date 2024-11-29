@@ -7,10 +7,10 @@ use App\Http\Requests\CreateAppealRequest;
 use App\Http\Requests\ResolveAppealRequest;
 use App\Models\ReasonP2pTransaction;
 use App\Notifications\UserMailNotify;
-use App\P2p\Appeal\AddProofInterface;
-use App\P2p\Appeal\AppealInterface;
-use App\P2p\Appeal\InitiateAppealInterface;
-use App\P2p\Appeal\UpdateStatusInterface;
+use App\P2p\Appeals\AddProofInterface;
+use App\P2p\Appeals\AppealInterface;
+use App\P2p\Appeals\InitiateAppealInterface;
+use App\P2p\Appeals\UpdateStatusInterface;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 

@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BankTransferDetailController;
+use App\Http\Controllers\ChatController;
+use App\Http\Controllers\NotifyController;
 use App\Http\Controllers\P2pAdController;
 use App\Http\Controllers\P2pTransactionController;
 use App\Http\Controllers\PairCoinFiatController;
@@ -45,6 +47,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/createAppeal', [AppealController::class, 'create']);
     Route::post('/addProof', [AppealController::class, 'addProof']);
     Route::post('/resolveAppeal', [AppealController::class, 'resolveAppeal']);
+
+    Route::get('/getOwnNotify', [NotifyController::class, 'getOwnBy']);
+    Route::post('/markingAsRead', [NotifyController::class, 'markingAsRead']);
+
+    Route::post('/chatP2p', [ChatController::class, 'createP2pChat']);
 
     Route::post('/auth', [PusherController::class, 'auth']);
 });

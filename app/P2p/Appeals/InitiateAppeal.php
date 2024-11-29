@@ -1,6 +1,6 @@
 <?php
 
-namespace App\P2p\Appeal;
+namespace App\P2p\Appeals;
 
 use App\Models\P2pTransaction;
 use Illuminate\Support\Arr;

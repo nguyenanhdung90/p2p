@@ -6,20 +6,26 @@ use App\P2p\Ads\InitiateAd;
 use App\P2p\Ads\InitiateAdInterface;
 use App\P2p\Ads\P2pAd;
 use App\P2p\Ads\P2pAdInterface;
-use App\P2p\Appeal\AddProof;
-use App\P2p\Appeal\AddProofInterface;
-use App\P2p\Appeal\Appeal;
-use App\P2p\Appeal\AppealInterface;
-use App\P2p\Appeal\InitiateAppeal;
-use App\P2p\Appeal\InitiateAppealInterface;
-use App\P2p\Appeal\UpdateStatus;
-use App\P2p\Appeal\UpdateStatusInterface;
+use App\P2p\Appeals\AddProof;
+use App\P2p\Appeals\AddProofInterface;
+use App\P2p\Appeals\Appeal;
+use App\P2p\Appeals\AppealInterface;
+use App\P2p\Appeals\InitiateAppeal;
+use App\P2p\Appeals\InitiateAppealInterface;
+use App\P2p\Appeals\UpdateStatus;
+use App\P2p\Appeals\UpdateStatusInterface;
 use App\P2p\BankTransferDetails\AddBankTransferDetail;
 use App\P2p\BankTransferDetails\AddBankTransferDetailInterface;
 use App\P2p\BankTransferDetails\BankTransferDetail;
 use App\P2p\BankTransferDetails\BankTransferDetailInterface;
 use App\P2p\BankTransferDetails\UpdateBankTransferDetail;
 use App\P2p\BankTransferDetails\UpdateBankTransferDetailInterface;
+use App\P2p\ChatP2pTransactions\AddMessage;
+use App\P2p\ChatP2pTransactions\AddMessageInterface;
+use App\P2p\Notifies\MarkingNotifyAsRead;
+use App\P2p\Notifies\MarkingNotifyAsReadInterface;
+use App\P2p\Notifies\Notify;
+use App\P2p\Notifies\NotifyInterface;
 use App\P2p\PairCoinFiat\AddPairCoinFiat;
 use App\P2p\PairCoinFiat\AddPairCoinFiatInterface;
 use App\P2p\PairCoinFiat\DeletePairCoinFiat;
@@ -62,6 +68,9 @@ class AppServiceProvider extends ServiceProvider
             AddBankTransferDetailInterface::class => AddBankTransferDetail::class,
             UpdateBankTransferDetailInterface::class => UpdateBankTransferDetail::class,
             UpdateP2pTransactionInterface::class => UpdateP2pTransaction::class,
+            NotifyInterface::class => Notify::class,
+            MarkingNotifyAsReadInterface::class => MarkingNotifyAsRead::class,
+            AddMessageInterface::class => AddMessage::class,
         ];
         foreach ($appServices as $key => $value) {
             $this->app->bind($key, $value);
