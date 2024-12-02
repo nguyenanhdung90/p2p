@@ -52,6 +52,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/markingAsRead', [NotifyController::class, 'markingAsRead']);
 
     Route::post('/chatP2p', [ChatController::class, 'createP2pChat']);
+    Route::get('/getChatP2p', [ChatController::class, 'getChatP2pBy']);
 
     Route::post('/auth', [PusherController::class, 'auth']);
 });

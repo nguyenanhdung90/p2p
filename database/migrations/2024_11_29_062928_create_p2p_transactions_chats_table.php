@@ -18,7 +18,7 @@ class CreateP2pTransactionsChatsTable extends Migration
             $table->unsignedBigInteger("p2p_transaction_id");
             $table->unsignedBigInteger("by_user_id");
             $table->unsignedBigInteger("user_chat_id");
-            $table->text("data");
+            $table->jsonb("data");
 
             $table->foreign('p2p_transaction_id', 'p2p_transaction_chat')
                 ->references('id')

@@ -22,6 +22,8 @@ use App\P2p\BankTransferDetails\UpdateBankTransferDetail;
 use App\P2p\BankTransferDetails\UpdateBankTransferDetailInterface;
 use App\P2p\ChatP2pTransactions\AddMessage;
 use App\P2p\ChatP2pTransactions\AddMessageInterface;
+use App\P2p\ChatP2pTransactions\P2pChat;
+use App\P2p\ChatP2pTransactions\P2pChatInterface;
 use App\P2p\Notifies\MarkingNotifyAsRead;
 use App\P2p\Notifies\MarkingNotifyAsReadInterface;
 use App\P2p\Notifies\Notify;
@@ -71,6 +73,7 @@ class AppServiceProvider extends ServiceProvider
             NotifyInterface::class => Notify::class,
             MarkingNotifyAsReadInterface::class => MarkingNotifyAsRead::class,
             AddMessageInterface::class => AddMessage::class,
+            P2pChatInterface::class => P2pChat::class,
         ];
         foreach ($appServices as $key => $value) {
             $this->app->bind($key, $value);
